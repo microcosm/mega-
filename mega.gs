@@ -16,22 +16,9 @@ function getNameSubstitution(name) {
 }
 
 function preProcessSubsheets() {
-  populateEventCategories();
   state.personValuesSubsheet = new PersonValuesSubsheet(state.spreadsheet, '(dropdowns)', { start:'K2', end:'K6' });
   buildTodoSubsheet();
   buildCyclesSubsheet();
-}
-
-function populateEventCategories() {
-  state.eventCategories = {
-    1: 'Evergreen',
-    2: 'Summer',
-    3: 'Winter',
-    4: 'Winter->Summer',
-    5: 'Summer->Winter',
-    6: 'Todo',
-    7: 'Completed'
-  };
 }
 
 function buildTodoSubsheet() {
