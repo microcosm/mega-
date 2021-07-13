@@ -2,6 +2,10 @@ var config = {
   gsheet: {
     name: 'mega—',
     id: '1uNxspHrfm9w-DPH1wfhTNdySxupd7h1RFrWlHCYPVcs'
+  },
+  toggles: {
+    performDataUpdates: true,
+    showLogAlert: false
   }
 }
 
