@@ -160,3 +160,7 @@ function postProcessSubsheets() {
     }
   });
 }
+
+function isSpecificValidEventData(row, section) {
+  return true;
+}
