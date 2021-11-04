@@ -16,7 +16,7 @@ function getNameSubstitution(name) {
 }
 
 function preProcessSubsheets() {
-  state.personValuesSubsheet = new PersonValuesSubsheet(state.spreadsheet, '(dropdowns)', { start:'K2', end:'K6' });
+  state.personValuesSubsheet = new PersonValuesSubsheet(state.spreadsheet, '(dropdowns)', { start:'A5', end:'A9' });
   buildTodoSubsheet();
   buildCyclesSubsheet();
 }
