@@ -60,7 +60,7 @@ function buildTodoSubsheet() {
     sections.todo.columns.durationHours
   ];
 
-  state.eventSubsheets.push(new EventSubsheet(state.spreadsheet, 'Todo', '997054615', range, sections, triggerCols));
+  //state.eventSubsheets.push(new EventSubsheet(state.spreadsheet, 'Todo', '997054615', range, sections, triggerCols));
 }
 
 function buildCyclesSubsheet() {
