@@ -15,13 +15,13 @@ function getNameSubstitution(name) {
     .replace('Both', 'both Julie and Andy together');
 }
 
-function preProcessSubsheets() {
-  state.valuesSubsheet = new ValuesSubsheet(state.spreadsheet, 'Values', { start:'B5', end:'B9' });
-  buildTodoSubsheet();
-  buildCyclesSubsheet();
+function preProcessSheets() {
+  state.valuesSheet = new ValuesSheet(state.spreadsheet, 'Values', { start:'B5', end:'B9' });
+  buildTodoSheet();
+  buildCyclesSheet();
 }
 
-function buildTodoSubsheet() {
+function buildTodoSheet() {
   const range = {
     offsets: {
       row: 2,
@@ -60,10 +60,10 @@ function buildTodoSubsheet() {
     sections.todo.columns.durationHours
   ];
 
-  //state.eventSubsheets.push(new EventSubsheet(state.spreadsheet, 'Todo', '997054615', range, sections, triggerCols));
+  //state.eventSheets.push(new EventSheet(state.spreadsheet, 'Todo', '997054615', range, sections, triggerCols));
 }
 
-function buildCyclesSubsheet() {
+function buildCyclesSheet() {
   const range = {
     offsets: {
       row: 2,
@@ -140,15 +140,15 @@ function buildCyclesSubsheet() {
     sections.checklist.columns.durationHours
   ];
 
-  var cyclesSubsheet = new EventSubsheet(state.spreadsheet, 'Cycles', '966806031', range, sections, triggerCols);
-  cyclesSubsheet.setSeasonCell(sections.global.columns.season, sections.global.rows.season);
-  state.eventSubsheets.push(cyclesSubsheet);
+  var cyclesSheet = new EventSheet(state.spreadsheet, 'Cycles', '966806031', range, sections, triggerCols);
+  cyclesSheet.setSeasonCell(sections.global.columns.season, sections.global.rows.season);
+  state.eventSheets.push(cyclesSheet);
 }
 
-function postProcessSubsheets() {
+function postProcessSheets() {
   var seasonStringLength = 6;
   state.validEventCategories = ['Todo', 'Evergreen'];
-  state.eventSubsheets.forEach(function(subsheet) {
+  state.eventSheets.forEach(function(subsheet) {
     if(subsheet.hasSeasonCell) {
       var seasonStr = state.rangeValues[subsheet.name][subsheet.getSeasonRangeRow()][subsheet.getSeasonRangeCol()];
       var fromSeason = seasonStr.substring(0, seasonStringLength);
