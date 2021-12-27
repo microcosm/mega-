@@ -145,12 +145,12 @@ function buildCyclesSheet() {
   state.eventSheets.push(cyclesSheet);
 }
 
-function postProcessSheets() {
+function setValidEventCategories() {
   var seasonStringLength = 6;
   state.validEventCategories = ['Todo', 'Evergreen'];
   state.eventSheets.forEach(function(sheet) {
     if(sheet.hasSeasonCell) {
-      var seasonStr = state.rangeValues[sheet.name][sheet.getSeasonRangeRow()][sheet.getSeasonRangeCol()];
+      var seasonStr = sheet.getSeasonStr();
       var fromSeason = seasonStr.substring(0, seasonStringLength);
       var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
       state.validEventCategories.push(toSeason);
