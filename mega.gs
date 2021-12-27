@@ -148,9 +148,9 @@ function buildCyclesSheet() {
 function postProcessSheets() {
   var seasonStringLength = 6;
   state.validEventCategories = ['Todo', 'Evergreen'];
-  state.eventSheets.forEach(function(subsheet) {
-    if(subsheet.hasSeasonCell) {
-      var seasonStr = state.rangeValues[subsheet.name][subsheet.getSeasonRangeRow()][subsheet.getSeasonRangeCol()];
+  state.eventSheets.forEach(function(sheet) {
+    if(sheet.hasSeasonCell) {
+      var seasonStr = state.rangeValues[sheet.name][sheet.getSeasonRangeRow()][sheet.getSeasonRangeCol()];
       var fromSeason = seasonStr.substring(0, seasonStringLength);
       var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
       state.validEventCategories.push(toSeason);
