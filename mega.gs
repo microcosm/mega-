@@ -22,7 +22,7 @@ function preProcessSheets() {
 }
 
 function buildTodoSheet() {
-  const range = {
+  const scriptRange = {
     offsets: {
       row: 2,
       col: 2
@@ -43,7 +43,7 @@ function buildTodoSheet() {
         startTime: 9,
         durationHours: 10
       },
-      rangeColumns: {},
+      scriptRangeColumns: {},
       hasDoneCol: true,
       hasEvents: true,
       allowFillInTheBlanksDates: true
@@ -60,11 +60,11 @@ function buildTodoSheet() {
     widgets.todo.columns.durationHours
   ];
 
-  //state.scriptSheets.push(new ScriptSheet(state.spreadsheet, 'Todo', '997054615', range, widgets, triggerCols));
+  //state.scriptSheets.push(new ScriptSheet(state.spreadsheet, 'Todo', '997054615', scriptRange, widgets, triggerCols));
 }
 
 function buildCyclesSheet() {
-  const range = {
+  const scriptRange = {
     offsets: {
       row: 2,
       col: 2
@@ -81,7 +81,7 @@ function buildCyclesSheet() {
       columns: {
         season: 15
       },
-      rangeColumns: {},
+      scriptRangeColumns: {},
       hasDoneCol: false,
       hasEvents: false
     },
@@ -98,7 +98,7 @@ function buildCyclesSheet() {
         durationHours: 13,
         workDate: 14
       },
-      rangeColumns: {},
+      scriptRangeColumns: {},
       hasDoneCol: false,
       hasEvents: true,
       allowFillInTheBlanksDates: false
@@ -114,7 +114,7 @@ function buildCyclesSheet() {
         startTime: 23,
         durationHours: 24
       },
-      rangeColumns: {},
+      scriptRangeColumns: {},
       hasDoneCol: true,
       hasEvents: true,
       allowFillInTheBlanksDates: true
@@ -140,7 +140,7 @@ function buildCyclesSheet() {
     widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new ScriptSheet(state.spreadsheet, 'Cycles', '966806031', range, widgets, triggerCols);
+  var cyclesSheet = new ScriptSheet(state.spreadsheet, 'Cycles', '966806031', scriptRange, widgets, triggerCols);
   cyclesSheet.setSeasonCell(widgets.global.columns.season, widgets.global.rows.season);
   state.scriptSheets.push(cyclesSheet);
 }
