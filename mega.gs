@@ -31,7 +31,7 @@ function buildTodoSheet() {
     maxCols: 11
   };
 
-  const sections = {
+  const widgets = {
     todo: {
       columns: {
         label: 2,
@@ -51,16 +51,16 @@ function buildTodoSheet() {
   };
 
   const triggerCols = [
-    sections.todo.columns.noun,
-    sections.todo.columns.verb,
-    sections.todo.columns.done,
-    sections.todo.columns.name,
-    sections.todo.columns.workDate,
-    sections.todo.columns.startTime,
-    sections.todo.columns.durationHours
+    widgets.todo.columns.noun,
+    widgets.todo.columns.verb,
+    widgets.todo.columns.done,
+    widgets.todo.columns.name,
+    widgets.todo.columns.workDate,
+    widgets.todo.columns.startTime,
+    widgets.todo.columns.durationHours
   ];
 
-  //state.eventSheets.push(new EventSheet(state.spreadsheet, 'Todo', '997054615', range, sections, triggerCols));
+  //state.scriptSheets.push(new ScriptSheet(state.spreadsheet, 'Todo', '997054615', range, widgets, triggerCols));
 }
 
 function buildCyclesSheet() {
@@ -73,7 +73,7 @@ function buildCyclesSheet() {
     maxCols: 24
   };
 
-  const sections = {
+  const widgets = {
     global: {
       rows: {
         season: 2
@@ -122,33 +122,33 @@ function buildCyclesSheet() {
   };
 
   const triggerCols = [
-    sections.global.columns.season,
-    sections.regular.columns.noun,
-    sections.regular.columns.verb,
-    sections.regular.columns.lastDone,
-    sections.regular.columns.name,
-    sections.regular.columns.cycleDays,
-    sections.regular.columns.nudgeDays,
-    sections.regular.columns.startTime,
-    sections.regular.columns.durationHours,
-    sections.checklist.columns.noun,
-    sections.checklist.columns.verb,
-    sections.checklist.columns.done,
-    sections.checklist.columns.name,
-    sections.checklist.columns.workDate,
-    sections.checklist.columns.startTime,
-    sections.checklist.columns.durationHours
+    widgets.global.columns.season,
+    widgets.regular.columns.noun,
+    widgets.regular.columns.verb,
+    widgets.regular.columns.lastDone,
+    widgets.regular.columns.name,
+    widgets.regular.columns.cycleDays,
+    widgets.regular.columns.nudgeDays,
+    widgets.regular.columns.startTime,
+    widgets.regular.columns.durationHours,
+    widgets.checklist.columns.noun,
+    widgets.checklist.columns.verb,
+    widgets.checklist.columns.done,
+    widgets.checklist.columns.name,
+    widgets.checklist.columns.workDate,
+    widgets.checklist.columns.startTime,
+    widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new EventSheet(state.spreadsheet, 'Cycles', '966806031', range, sections, triggerCols);
-  cyclesSheet.setSeasonCell(sections.global.columns.season, sections.global.rows.season);
-  state.eventSheets.push(cyclesSheet);
+  var cyclesSheet = new ScriptSheet(state.spreadsheet, 'Cycles', '966806031', range, widgets, triggerCols);
+  cyclesSheet.setSeasonCell(widgets.global.columns.season, widgets.global.rows.season);
+  state.scriptSheets.push(cyclesSheet);
 }
 
 function setValidEventCategories() {
   var seasonStringLength = 6;
   state.validEventCategories = ['Todo', 'Evergreen'];
-  state.eventSheets.forEach(function(sheet) {
+  state.scriptSheets.forEach(function(sheet) {
     if(sheet.hasSeasonCell) {
       var seasonStr = sheet.getSeasonStr();
       var fromSeason = seasonStr.substring(0, seasonStringLength);
@@ -161,6 +161,6 @@ function setValidEventCategories() {
   });
 }
 
-function isSpecificValidEventData(row, section) {
+function isSpecificValidEventData(row, widget) {
   return true;
 }
