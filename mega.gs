@@ -45,7 +45,7 @@ function buildTodoSheet() {
       },
       scriptRangeColumns: {},
       hasDoneCol: true,
-      hasEvents: true,
+      hasCalendarEvents: true,
       allowFillInTheBlanksDates: true
     }
   };
@@ -85,7 +85,7 @@ function buildCyclesSheet() {
       },
       scriptRangeColumns: {},
       hasDoneCol: false,
-      hasEvents: false
+      hasCalendarEvents: false
     },
     regular: {
       columns: {
@@ -102,7 +102,7 @@ function buildCyclesSheet() {
       },
       scriptRangeColumns: {},
       hasDoneCol: false,
-      hasEvents: true,
+      hasCalendarEvents: true,
       allowFillInTheBlanksDates: false
     },
     checklist: {
@@ -118,7 +118,7 @@ function buildCyclesSheet() {
       },
       scriptRangeColumns: {},
       hasDoneCol: true,
-      hasEvents: true,
+      hasCalendarEvents: true,
       allowFillInTheBlanksDates: true
     }
   };
@@ -162,6 +162,6 @@ function registerSeasonalWidgetsForScriptResponse(sheet) {
   }
 }
 
-function isSpecificValidEventData(row, widget) {
+function isSpecificValidCalendarEvent(row, widget) {
   return true;
 }
