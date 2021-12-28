@@ -61,7 +61,9 @@ function buildTodoSheet() {
   ];
 
   //state.scriptSheets.push(new ScriptSheet(state.spreadsheet, 'Todo', '997054615', scriptRange, widgets, triggerCols));
+  //state.scriptResponsiveWidgets.push('Todo');
 }
+
 
 function buildCyclesSheet() {
   const scriptRange = {
@@ -143,22 +145,21 @@ function buildCyclesSheet() {
   var cyclesSheet = new ScriptSheet(state.spreadsheet, 'Cycles', '966806031', scriptRange, widgets, triggerCols);
   cyclesSheet.setSeasonCell(widgets.global.columns.season, widgets.global.rows.season);
   state.scriptSheets.push(cyclesSheet);
+
+  state.scriptResponsiveWidgets.push('Evergreen');
+  registerSeasonalWidgetsForScriptResponse(cyclesSheet);  
 }
 
-function setValidEventCategories() {
+function registerSeasonalWidgetsForScriptResponse(sheet) {
+  var seasonStr = sheet.getSeasonStr();
   var seasonStringLength = 6;
-  state.validEventCategories = ['Todo', 'Evergreen'];
-  state.scriptSheets.forEach(function(sheet) {
-    if(sheet.hasSeasonCell) {
-      var seasonStr = sheet.getSeasonStr();
-      var fromSeason = seasonStr.substring(0, seasonStringLength);
-      var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
-      state.validEventCategories.push(toSeason);
-      if(toSeason != fromSeason){
-        state.validEventCategories.push(seasonStr);
-      }
-    }
-  });
+  var fromSeason = seasonStr.substring(0, seasonStringLength);
+  var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
+
+  state.scriptResponsiveWidgets.push(toSeason);
+  if(toSeason != fromSeason){
+    state.scriptResponsiveWidgets.push(seasonStr);
+  }
 }
 
 function isSpecificValidEventData(row, widget) {
