@@ -60,7 +60,7 @@ function buildTodoSheet() {
     widgets.todo.columns.durationHours
   ];
 
-  //state.scriptSheets.push(new ScriptSheet(state.spreadsheet, 'Todo', '997054615', scriptRange, widgets, triggerCols));
+  //state.scriptSheets.push(new EventSheet(state.spreadsheet, 'Todo', '997054615', scriptRange, widgets, triggerCols));
   //state.scriptResponsiveWidgets.push('Todo');
 }
 
@@ -142,7 +142,7 @@ function buildCyclesSheet() {
     widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new ScriptSheet(state.spreadsheet, 'Cycles', '966806031', scriptRange, widgets, triggerCols);
+  var cyclesSheet = new EventSheet(state.spreadsheet, 'Cycles', '966806031', scriptRange, widgets, triggerCols);
   cyclesSheet.setSeasonCell(widgets.global.columns.season, widgets.global.rows.season);
   state.scriptSheets.push(cyclesSheet);
 
