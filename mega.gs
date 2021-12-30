@@ -167,7 +167,3 @@ function configureSeasonalWidgetsForScriptResponse(sheetConfig, sheet) {
     sheetConfig.scriptResponsiveWidgetNames.push(seasonStr);
   }
 }
-
-function isSpecificValidEvent(row, widget) {
-  return true;
-}
