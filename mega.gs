@@ -65,7 +65,7 @@ function buildTodoSheet() {
     widgets.todo.columns.durationHours
   ];
 
-  //var todoSheet = new EventSheet('Todo', '997054615', sheetConfig);
+  //var todoSheet = new ScriptSheet('Todo', '997054615', sheetConfig);
   //registerSheetForFeature(todoSheet, state.features.updateCalendarFromSpreadsheet);
 }
 
@@ -82,7 +82,7 @@ function buildCyclesSheet() {
     },
 
     widgets: {
-      global: {
+      seasonDropDown: {
         rows: {
           season: 2
         },
@@ -93,7 +93,7 @@ function buildCyclesSheet() {
         hasDoneCol: false,
         hasEvents: false
       },
-      regular: {
+      cyclical: {
         columns: {
           label: 2,
           noun: 2,
@@ -133,16 +133,19 @@ function buildCyclesSheet() {
   };
 
   const widgets = sheetConfig.widgets;
+
   sheetConfig.triggerCols = [
-    widgets.global.columns.season,
-    widgets.regular.columns.noun,
-    widgets.regular.columns.verb,
-    widgets.regular.columns.lastDone,
-    widgets.regular.columns.name,
-    widgets.regular.columns.cycleDays,
-    widgets.regular.columns.nudgeDays,
-    widgets.regular.columns.startTime,
-    widgets.regular.columns.durationHours,
+    widgets.seasonDropDown.columns.season,
+
+    widgets.cyclical.columns.noun,
+    widgets.cyclical.columns.verb,
+    widgets.cyclical.columns.lastDone,
+    widgets.cyclical.columns.name,
+    widgets.cyclical.columns.cycleDays,
+    widgets.cyclical.columns.nudgeDays,
+    widgets.cyclical.columns.startTime,
+    widgets.cyclical.columns.durationHours,
+
     widgets.checklist.columns.noun,
     widgets.checklist.columns.verb,
     widgets.checklist.columns.done,
@@ -152,14 +155,13 @@ function buildCyclesSheet() {
     widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new EventSheet('Cycles', '966806031', sheetConfig);
-  cyclesSheet.setSeasonCell(widgets.global.columns.season, widgets.global.rows.season);
+  var cyclesSheet = new ScriptSheet('Cycles', '966806031', sheetConfig);
   configureSeasonalWidgetsForScriptResponse(sheetConfig, cyclesSheet);
   registerSheetForFeature(cyclesSheet, state.features.updateCalendarFromSpreadsheet);
 }
 
 function configureSeasonalWidgetsForScriptResponse(sheetConfig, sheet) {
-  var seasonStr = sheet.getSeasonStr();
+  var seasonStr = sheet.sheetRef.getRange('O2').getValue();
   var seasonStringLength = 6;
   var fromSeason = seasonStr.substring(0, seasonStringLength);
   var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
