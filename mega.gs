@@ -44,7 +44,6 @@ function buildTodoSheet() {
           startTime: 9,
           durationHours: 10
         },
-        scriptRangeColumns: {},
         hasDoneCol: true,
         hasEvents: true,
         allowFillInTheBlanksDates: true
@@ -89,7 +88,6 @@ function buildCyclesSheet() {
         columns: {
           season: 15
         },
-        scriptRangeColumns: {},
         hasDoneCol: false,
         hasEvents: false
       },
@@ -106,7 +104,6 @@ function buildCyclesSheet() {
           durationHours: 13,
           workDate: 14
         },
-        scriptRangeColumns: {},
         hasDoneCol: false,
         hasEvents: true,
         allowFillInTheBlanksDates: false
@@ -122,7 +119,6 @@ function buildCyclesSheet() {
           startTime: 23,
           durationHours: 24
         },
-        scriptRangeColumns: {},
         hasDoneCol: true,
         hasEvents: true,
         allowFillInTheBlanksDates: true
