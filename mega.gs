@@ -16,41 +16,46 @@ function getNameSubstitution(name) {
 }
 
 function preProcessSheets() {
-  state.valuesSheet = new ValuesSheet(state.spreadsheet, 'Values', { start:'B5', end:'B9' });
+  state.valuesSheet = new ValuesSheet('Values', { scriptRange: { start:'B5', end:'B9' }});
   buildTodoSheet();
   buildCyclesSheet();
 }
 
 function buildTodoSheet() {
-  const scriptRange = {
-    offsets: {
-      row: 2,
-      col: 2
-    },
-    maxRows: 500,
-    maxCols: 11
-  };
-
-  const widgets = {
-    todo: {
-      columns: {
-        label: 2,
-        noun: 2,
-        verb: 3,
-        done: 5,
-        name: 7,
-        workDate: 8,
-        startTime: 9,
-        durationHours: 10
+  const sheetConfig = {
+    scriptRange: {
+      offsets: {
+        row: 2,
+        col: 2
       },
-      scriptRangeColumns: {},
-      hasDoneCol: true,
-      hasEvents: true,
-      allowFillInTheBlanksDates: true
-    }
+      maxRows: 500,
+      maxCols: 11
+    },
+
+    widgets: {
+      todo: {
+        columns: {
+          label: 2,
+          noun: 2,
+          verb: 3,
+          done: 5,
+          name: 7,
+          workDate: 8,
+          startTime: 9,
+          durationHours: 10
+        },
+        scriptRangeColumns: {},
+        hasDoneCol: true,
+        hasEvents: true,
+        allowFillInTheBlanksDates: true
+      }
+    },
+
+    scriptResponsiveWidgetNames: ['Todo']
   };
 
-  const triggerCols = [
+  const widgets = sheetConfig.widgets;
+  sheetConfig.triggerCols = [
     widgets.todo.columns.noun,
     widgets.todo.columns.verb,
     widgets.todo.columns.done,
@@ -60,70 +65,75 @@ function buildTodoSheet() {
     widgets.todo.columns.durationHours
   ];
 
-  //var todoSheet = new EventSheet(state.spreadsheet, 'Todo', '997054615', scriptRange, widgets, triggerCols);
-  //registerSheetForFeature(todoSheet, ['Todo'], state.features.updateCalendarFromSpreadsheet);
+  //var todoSheet = new EventSheet('Todo', '997054615', sheetConfig);
+  //registerSheetForFeature(todoSheet, state.features.updateCalendarFromSpreadsheet);
 }
 
 
 function buildCyclesSheet() {
-  const scriptRange = {
-    offsets: {
-      row: 2,
-      col: 2
+  const sheetConfig = {
+    scriptRange: {
+      offsets: {
+        row: 2,
+        col: 2
+      },
+      maxRows: 500,
+      maxCols: 24
     },
-    maxRows: 500,
-    maxCols: 24
+
+    widgets: {
+      global: {
+        rows: {
+          season: 2
+        },
+        columns: {
+          season: 15
+        },
+        scriptRangeColumns: {},
+        hasDoneCol: false,
+        hasEvents: false
+      },
+      regular: {
+        columns: {
+          label: 2,
+          noun: 2,
+          verb: 3,
+          lastDone: 4,
+          name: 6,
+          cycleDays: 7,
+          nudgeDays: 11,
+          startTime: 12,
+          durationHours: 13,
+          workDate: 14
+        },
+        scriptRangeColumns: {},
+        hasDoneCol: false,
+        hasEvents: true,
+        allowFillInTheBlanksDates: false
+      },
+      checklist: {
+        columns: {
+          label: 17,
+          noun: 17,
+          verb: 18,
+          done: 19,
+          name: 21,
+          workDate: 22,
+          startTime: 23,
+          durationHours: 24
+        },
+        scriptRangeColumns: {},
+        hasDoneCol: true,
+        hasEvents: true,
+        allowFillInTheBlanksDates: true
+      }
+    },
+
+    scriptResponsiveWidgetNames: ['Evergreen']
   };
 
-  const widgets = {
-    global: {
-      rows: {
-        season: 2
-      },
-      columns: {
-        season: 15
-      },
-      scriptRangeColumns: {},
-      hasDoneCol: false,
-      hasEvents: false
-    },
-    regular: {
-      columns: {
-        label: 2,
-        noun: 2,
-        verb: 3,
-        lastDone: 4,
-        name: 6,
-        cycleDays: 7,
-        nudgeDays: 11,
-        startTime: 12,
-        durationHours: 13,
-        workDate: 14
-      },
-      scriptRangeColumns: {},
-      hasDoneCol: false,
-      hasEvents: true,
-      allowFillInTheBlanksDates: false
-    },
-    checklist: {
-      columns: {
-        label: 17,
-        noun: 17,
-        verb: 18,
-        done: 19,
-        name: 21,
-        workDate: 22,
-        startTime: 23,
-        durationHours: 24
-      },
-      scriptRangeColumns: {},
-      hasDoneCol: true,
-      hasEvents: true,
-      allowFillInTheBlanksDates: true
-    }
-  };
-
-  const triggerCols = [
+  const widgets = sheetConfig.widgets;
+  sheetConfig.triggerCols = [
     widgets.global.columns.season,
     widgets.regular.columns.noun,
     widgets.regular.columns.verb,
@@ -142,21 +152,21 @@ function buildCyclesSheet() {
     widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new EventSheet(state.spreadsheet, 'Cycles', '966806031', scriptRange, widgets, triggerCols);
+  var cyclesSheet = new EventSheet('Cycles', '966806031', sheetConfig);
   cyclesSheet.setSeasonCell(widgets.global.columns.season, widgets.global.rows.season);
-  registerSheetForFeature(cyclesSheet, ['Evergreen'], state.features.updateCalendarFromSpreadsheet);
-  registerSeasonalWidgetsForScriptResponse(cyclesSheet);  
+  configureSeasonalWidgetsForScriptResponse(sheetConfig, cyclesSheet);
+  registerSheetForFeature(cyclesSheet, state.features.updateCalendarFromSpreadsheet);
 }
 
-function registerSeasonalWidgetsForScriptResponse(sheet) {
+function configureSeasonalWidgetsForScriptResponse(sheetConfig, sheet) {
   var seasonStr = sheet.getSeasonStr();
   var seasonStringLength = 6;
   var fromSeason = seasonStr.substring(0, seasonStringLength);
   var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
 
-  state.scriptResponsiveWidgets.push(toSeason);
+  sheetConfig.scriptResponsiveWidgetNames.push(toSeason);
   if(toSeason != fromSeason){
-    state.scriptResponsiveWidgets.push(seasonStr);
+    sheetConfig.scriptResponsiveWidgetNames.push(seasonStr);
   }
 }
 
