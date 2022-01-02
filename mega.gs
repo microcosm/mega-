@@ -26,7 +26,7 @@ function readValuesSheet() {
     name: 'Values',
     range: 'B5:B9',
     columns: {
-      people: 0
+      users: 0
     }
   };
   state.valuesSheet = new ValuesSheet(sheetConfig);
