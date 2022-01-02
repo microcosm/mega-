@@ -16,13 +16,15 @@ function getNameSubstitution(name) {
 }
 
 function preProcessSheets() {
-  state.valuesSheet = new ValuesSheet('Values', { scriptRange: { start:'B5', end:'B9' }});
+  state.valuesSheet = new ValuesSheet({ name: 'Values', scriptRange: { start:'B5', end:'B9' }});
   buildTodoSheet();
   buildCyclesSheet();
 }
 
 function buildTodoSheet() {
   const sheetConfig = {
+    name: 'Todo',
+    id: '997054615',
     scriptRange: {
       offsets: {
         row: 2,
@@ -64,13 +66,15 @@ function buildTodoSheet() {
     widgets.todo.columns.durationHours
   ];
 
-  //var todoSheet = new ScriptSheet('Todo', '997054615', sheetConfig);
+  //var todoSheet = new ScriptSheet(sheetConfig);
   //registerSheetForFeature(todoSheet, state.features.updateCalendarFromSpreadsheet);
 }
 
 
 function buildCyclesSheet() {
   const sheetConfig = {
+    name: 'Cycles',
+    id: '966806031',
     scriptRange: {
       offsets: {
         row: 2,
@@ -151,7 +155,7 @@ function buildCyclesSheet() {
     widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new ScriptSheet('Cycles', '966806031', sheetConfig);
+  var cyclesSheet = new ScriptSheet(sheetConfig);
   configureSeasonalWidgetsForScriptResponse(sheetConfig, cyclesSheet);
   registerSheetForFeature(cyclesSheet, state.features.updateCalendarFromSpreadsheet);
 }
