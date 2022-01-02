@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         separator: "\n\n/* -------------------------------------------------------------------------- */\n\n"
       },
       files: {
-        src: ['gsheet-/*.gs', '*.gs'],
+        src: ['gsheet-/**/*.gs', 'gsheet-/*.gs', '*.gs'],
         dest: 'built.gs'
       }
     }
