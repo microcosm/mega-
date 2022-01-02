@@ -16,9 +16,20 @@ function getNameSubstitution(name) {
 }
 
 function preProcessSheets() {
-  state.valuesSheet = new ValuesSheet({ name: 'Values', scriptRange: { start:'B5', end:'B9' }});
+  readValuesSheet();
   buildTodoSheet();
   buildCyclesSheet();
+}
+
+function readValuesSheet() {
+  const sheetConfig = {
+    name: 'Values',
+    range: 'B5:B9',
+    columns: {
+      people: 0
+    }
+  };
+  state.valuesSheet = new ValuesSheet(sheetConfig);
 }
 
 function buildTodoSheet() {
