@@ -82,9 +82,7 @@ function setUpCyclesSheet() {
         },
         columns: {
           season: 14
-        },
-        hasDoneCol: false,
-        hasEvents: false
+        }
       },
       cyclical: {
         columns: {
@@ -99,9 +97,7 @@ function setUpCyclesSheet() {
           durationHours: 12,
           workDate: 13
         },
-        hasDoneCol: false,
-        hasEvents: true,
-        allowFillInTheBlanksDates: false
+        hasEvents: true
       },
       checklist: {
         columns: {
