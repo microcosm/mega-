@@ -136,17 +136,17 @@ function setUpCyclesSheet() {
   ];
 
   var cyclesSheet = registerFeatureSheet(state.features.updateCalendarFromSpreadsheet, sheetConfig);
-  configureSeasonalWidgetsForScriptResponse(sheetConfig, cyclesSheet);
+  addDynamicSeasonWidgetsFromDropdown(cyclesSheet);
 }
 
-function configureSeasonalWidgetsForScriptResponse(sheetConfig, sheet) {
+function addDynamicSeasonWidgetsFromDropdown(sheet) {
   var seasonStr = sheet.sheetRef.getRange('O2').getValue();
   var seasonStringLength = 6;
   var fromSeason = seasonStr.substring(0, seasonStringLength);
   var toSeason = seasonStr.substring(seasonStr.length - seasonStringLength);
 
-  sheetConfig.scriptResponsiveWidgetNames.push(toSeason);
+  sheet.config.scriptResponsiveWidgetNames.push(toSeason);
   if(toSeason != fromSeason){
-    sheetConfig.scriptResponsiveWidgetNames.push(seasonStr);
+    sheet.config.scriptResponsiveWidgetNames.push(seasonStr);
   }
 }
