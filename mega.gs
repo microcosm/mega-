@@ -38,8 +38,10 @@ function setUpTodoSheet() {
     id: '997054615',
     widgets: {
       todo: {
+        name: {
+          column: 1, rowOffset: -1
+        },
         columns: {
-          label: 1,
           noun: 1,
           verb: 2,
           done: 4,
@@ -78,8 +80,10 @@ function setUpCyclesSheet() {
     id: '966806031',
     widgets: {
       cyclical: {
+        name: {
+          column: 1, rowOffset: -1
+        },
         columns: {
-          label: 1,
           noun: 1,
           verb: 2,
           lastDone: 3,
@@ -93,8 +97,10 @@ function setUpCyclesSheet() {
         hasEvents: true
       },
       checklist: {
+        name: {
+          column: 16, rowOffset: -1
+        },
         columns: {
-          label: 16,
           noun: 16,
           verb: 17,
           done: 18,
