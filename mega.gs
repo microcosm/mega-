@@ -76,14 +76,6 @@ function setUpCyclesSheet() {
     name: 'Cycles',
     id: '966806031',
     widgets: {
-      seasonDropDown: {
-        rows: {
-          season: 1
-        },
-        columns: {
-          season: 14
-        }
-      },
       cyclical: {
         columns: {
           label: 1,
@@ -119,10 +111,11 @@ function setUpCyclesSheet() {
     scriptResponsiveWidgetNames: ['Evergreen']
   };
 
+  const seasonCol = 14;
   const widgets = sheetConfig.widgets;
 
   sheetConfig.triggerCols = [
-    widgets.seasonDropDown.columns.season,
+    seasonCol,
 
     widgets.cyclical.columns.noun,
     widgets.cyclical.columns.verb,
