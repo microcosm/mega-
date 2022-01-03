@@ -15,47 +15,37 @@ function getNameSubstitution(name) {
     .replace('Both', 'both Julie and Andy together');
 }
 
-function preProcessSheets() {
-  readValuesSheet();
-  buildTodoSheet();
-  buildCyclesSheet();
+function setUpSheets() {
+  setUpValuesSheet();
+  setUpTodoSheet();
+  setUpCyclesSheet();
 }
 
-function readValuesSheet() {
-  const sheetConfig = {
+function setUpValuesSheet() {
+  registerValuesSheet({
     name: 'Values',
     range: 'B5:B9',
     columns: {
       users: 0
     }
-  };
-  state.valuesSheet = new ValuesSheet(sheetConfig);
+  });
 }
 
-function buildTodoSheet() {
+function setUpTodoSheet() {
   const sheetConfig = {
     name: 'Todo',
     id: '997054615',
-    scriptRange: {
-      offsets: {
-        row: 2,
-        col: 2
-      },
-      maxRows: 500,
-      maxCols: 11
-    },
-
     widgets: {
       todo: {
         columns: {
-          label: 2,
-          noun: 2,
-          verb: 3,
-          done: 5,
-          name: 7,
-          workDate: 8,
-          startTime: 9,
-          durationHours: 10
+          label: 1,
+          noun: 1,
+          verb: 2,
+          done: 4,
+          name: 6,
+          workDate: 7,
+          startTime: 8,
+          durationHours: 9
         },
         hasDoneCol: true,
         hasEvents: true,
@@ -77,47 +67,37 @@ function buildTodoSheet() {
     widgets.todo.columns.durationHours
   ];
 
-  //var todoSheet = new ScriptSheet(sheetConfig);
-  //registerSheetForFeature(todoSheet, state.features.updateCalendarFromSpreadsheet);
+  //registerFeatureSheet(state.features.updateCalendarFromSpreadsheet, sheetConfig);
 }
 
 
-function buildCyclesSheet() {
+function setUpCyclesSheet() {
   const sheetConfig = {
     name: 'Cycles',
     id: '966806031',
-    scriptRange: {
-      offsets: {
-        row: 2,
-        col: 2
-      },
-      maxRows: 500,
-      maxCols: 24
-    },
-
     widgets: {
       seasonDropDown: {
         rows: {
-          season: 2
+          season: 1
         },
         columns: {
-          season: 15
+          season: 14
         },
         hasDoneCol: false,
         hasEvents: false
       },
       cyclical: {
         columns: {
-          label: 2,
-          noun: 2,
-          verb: 3,
-          lastDone: 4,
-          name: 6,
-          cycleDays: 7,
-          nudgeDays: 11,
-          startTime: 12,
-          durationHours: 13,
-          workDate: 14
+          label: 1,
+          noun: 1,
+          verb: 2,
+          lastDone: 3,
+          name: 5,
+          cycleDays: 6,
+          nudgeDays: 10,
+          startTime: 11,
+          durationHours: 12,
+          workDate: 13
         },
         hasDoneCol: false,
         hasEvents: true,
@@ -125,14 +105,14 @@ function buildCyclesSheet() {
       },
       checklist: {
         columns: {
-          label: 17,
-          noun: 17,
-          verb: 18,
-          done: 19,
-          name: 21,
-          workDate: 22,
-          startTime: 23,
-          durationHours: 24
+          label: 16,
+          noun: 16,
+          verb: 17,
+          done: 18,
+          name: 20,
+          workDate: 21,
+          startTime: 22,
+          durationHours: 23
         },
         hasDoneCol: true,
         hasEvents: true,
@@ -166,9 +146,8 @@ function buildCyclesSheet() {
     widgets.checklist.columns.durationHours
   ];
 
-  var cyclesSheet = new ScriptSheet(sheetConfig);
+  var cyclesSheet = registerFeatureSheet(state.features.updateCalendarFromSpreadsheet, sheetConfig);
   configureSeasonalWidgetsForScriptResponse(sheetConfig, cyclesSheet);
-  registerSheetForFeature(cyclesSheet, state.features.updateCalendarFromSpreadsheet);
 }
 
 function configureSeasonalWidgetsForScriptResponse(sheetConfig, sheet) {
