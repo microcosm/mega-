@@ -25,7 +25,7 @@ function getFeatureSheetConfigs() {
 }
 
 function getTimelineConfig() {
-  const styles = this.getTimelineStyles([
+  const styles = state.style.getTimeline([
     'titles',
     'headers',
     'generic',
@@ -121,7 +121,7 @@ function getTimelineConfig() {
 }
 
 function getCurrentAndyConfig() {
-  const styles = this.getStyles([
+  const styles = state.style.getDefault([
     'titles',
     'titlesAboveBelow',
     'hiddenValues',
@@ -286,7 +286,7 @@ function getCyclesConfig() {
 }
 
 function getMapConfig() {
-  let styles = this.getTwoPanelStyles([
+  let styles = state.style.getTwoPanel([
     'titles',
     'titlesAboveBelow',
     'headers',
@@ -327,235 +327,4 @@ function getMapConfig() {
       }
     }
   };
-}
-
-function getTimelineStyles(sections) {
-  let styles = {
-    sections: sections,
-    titles: [{
-      beginColumnOffset: 0,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 24,
-      fontColor: '#0c0c0c',
-      background: '#f3f3f3',
-      rowHeight: 55,
-      border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
-    }, {
-      beginColumnOffset: 1,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      border: { top: false, left: false, bottom: false, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }, {
-      beginColumnOffset: 2,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 7,
-      fontColor: '#999999',
-      background: '#f3f3f3',
-      border: { top: true, left: true, bottom: true, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }, {
-      beginColumnOffset: 3,
-      fontFamily: 'Roboto Mono',
-      fontSize: 10,
-      fontColor: null,
-      background: null,
-      border: { top: true, left: true, bottom: true, right: true, vertical: true, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }],
-    headers: [{
-      beginColumnOffset: 0,
-      numColumns: 2,
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      rowHeight: 36,
-      border: { top: true, left: false, bottom: true, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }, {
-      beginColumnOffset: 2,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 10,
-      fontColor: '#666666',
-      background: '#f3f3f3',
-      border: { top: true, left: false, bottom: true, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }, {
-      beginColumnOffset: 3,
-      fontFamily: 'Roboto Mono',
-      fontSize: 8,
-      fontColor: null,
-      background: null,
-      border: { top: true, left: true, bottom: true, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }],
-    contents: [{
-      beginColumnOffset: 0,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 14,
-      fontColor: null,
-      background: null,
-      border: { top: null, left: null, bottom: null, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }, {
-      beginColumnOffset: 1,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 9,
-      fontColor: null,
-      background: null,
-      border: { top: null, left: null, bottom: null, right: true, vertical: false, horizontal: false, color: '#666666', style: 'SOLID_MEDIUM' }
-    }, {
-      beginColumnOffset: 2,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 8,
-      fontColor: null,
-      background: null,
-      borders: [
-        { top: null, left: null, bottom: null, right: null, vertical: false, horizontal: true, color: '#ffffff', style: 'SOLID' },
-        { top: null, left: null, bottom: null, right: true, vertical: false, horizontal: null, color: '#b7b7b7', style: 'SOLID_MEDIUM' }
-      ]
-    }, {
-      beginColumnOffset: 3,
-      fontFamily: 'Roboto Mono',
-      fontSize: 7,
-      fontColor: null,
-      background: null,
-      rowHeight: 41,
-      borders: [
-        { top: null, left: null, bottom: null, right: null, vertical: false, horizontal: true, color: '#ffffff', style: 'SOLID' },
-        { top: true, left: null, bottom: true, right: true, vertical: null, horizontal: null, color: '#666666', style: 'SOLID_MEDIUM' }
-      ]
-    }, {
-      beginColumnOffset: 0,
-      numColumns: 3,
-      border: { top: true, left: true, bottom: true, right: null, vertical: null, horizontal: null, color: '#666666', style: 'SOLID_MEDIUM' }
-    }],
-    rowsOutside: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      rowHeight: 9
-    }],
-    columnsOutside: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      columnWidth: 12
-    }],
-    matchers: [{
-      match: {
-        value: getMondayThisWeek(),
-        column: 'C'
-      },
-      beginColumnOffset: 2,
-      border: { top: true, left: true, bottom: true, right: true, vertical: null, horizontal: null, color: '#ea4335', style: 'SOLID_THICK' }
-    }]
-  };
-  return styles;
-}
-
-function getStyles(sections) {
-  let styles = {
-    sections: sections,
-    titles: [{
-      beginColumnOffset: 0,
-      numColumns: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 24,
-      fontColor: '#0c0c0c',
-      background: '#f3f3f3',
-      rowHeight: 55,
-      border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
-    }, {
-      beginColumnOffset: 1,
-      endColumnOffset: 1,
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
-    }, {
-      numColumns: 1,
-      endColumnOffset: 0,
-      fontFamily: 'Roboto Mono',
-      fontSize: 9,
-      fontColor: null,
-      background: '#f3f3f3',
-      border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
-    }],
-    titlesAboveBelow: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      rowHeight: 9
-    }],
-    hiddenValues: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3'
-    }],
-    headers: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 13,
-      fontColor: '#ffffff',
-      background: '#999999',
-      rowHeight: 56,
-      border: { top: true, left: false, bottom: true, right: false, vertical: false, horizontal: false, color: '#333333', style: 'SOLID_THICK' }
-    }],
-    contents: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 9,
-      fontColor: null,
-      background: null,
-      rowHeight: 48,
-      border: { top: null, left: false, bottom: null, right: false, vertical: false, horizontal: true, color: '#999999', style: 'SOLID' }
-    }],
-    underContents: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      rowHeight: 9,
-      border: { top: true, left: false, bottom: null, right: false, vertical: false, horizontal: false, color: '#333333', style: 'SOLID_THICK' }
-    }],
-    rowsOutside: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      rowHeight: 9,
-      border: { top: null, left: false, bottom: false, right: false, vertical: false, horizontal: false }
-    }],
-    columnsOutside: [{
-      fontFamily: 'Roboto Mono',
-      fontSize: 1,
-      fontColor: '#f3f3f3',
-      background: '#f3f3f3',
-      columnWidth: 12,
-      border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
-    }]
-  };
-  return styles;
-}
-
-function getTwoPanelStyles(sections, numLeftColumns=1) {
-  let styles = this.getStyles(sections);
-  const defaultFontSize = styles.contents[0].fontSize;
-  styles.contents[0].fontSize = PropertyCommand.IGNORE;
-  styles.contents.push({
-    beginColumnOffset: 0,
-    numColumns: numLeftColumns,
-    fontSize: 12
-  }, {
-    beginColumnOffset: numLeftColumns,
-    fontSize: defaultFontSize
-  });
-  return styles;
 }
