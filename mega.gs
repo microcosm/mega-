@@ -135,7 +135,6 @@ function getCurrentAndyConfig() {
   ]);
   return {
     name: 'Current:Andy',
-    hiddenValueRow: 3,
     features: {
       copySheetEventsToCalendar: {
         events: [Event.onSheetEdit, Event.onOvernightTimer],
@@ -193,9 +192,13 @@ function getCurrentAndyConfig() {
               workStream: [{ column: 'B', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
             }
           },
-          setSheetHiddenValue: {
+          setSheetValue: {
             events: [Event.onSidebarSubmit],
-            cellToUpdate: { column: 'D' }
+            update: {
+              rowMarker: SectionMarker.hiddenValues,
+              column: 'D',
+              value: PropertyCommand.EVENT_DATA
+            }
           }
         }
       },
@@ -283,7 +286,7 @@ function getCyclesConfig() {
 }
 
 function getMapConfig() {
-  let styles = this.getTwoColumnStyles([
+  let styles = this.getTwoPanelStyles([
     'titles',
     'titlesAboveBelow',
     'headers',
@@ -291,8 +294,8 @@ function getMapConfig() {
     'underMain',
     'rowsOutside',
     'columnsOutside'
-  ]);
-  styles.contents[0].rowHeight = 95;
+  ], 2);
+  styles.contents[0].rowHeight = 70;
   return {
     name: 'Map',
     features: {
@@ -306,6 +309,21 @@ function getMapConfig() {
         type: 'text',
         title: 'Map',
         text: `The 'Map' tab is based loosely around <a href='https://www.mindmapping.com/mind-map'>Mind Maps</a>, in that is is designed to work in harmony the natural functioning of the human mind and get ideas down in a mental tree-like structure.<br><br>All the text fields are free type, no need to worry about whether your edits correctly reference other areas of the dashboard. Just go ahead and start typing in whatever way matches the way things are in your mind.<br><br>There is a hierarchy inherent to mind-mapping but it shouldn't be overthought - arrange things in an intuitive way. Also, there is an inherent prioritization inherent in the positions of branches and twigs, but this doesn't constrain action. The next todo item could right now be on the furthest twig. Instead, arrage things as intuitively as you can.<br><br>The benefit of this tab is it can be referenced when building and updating Todo lists, or to get a fast but comprehensive overview of the set of current concerns.`
+      },
+      review: {
+        type: 'buttons',
+        title: 'Last review',
+        options: ['Today'],
+        features: {
+          setSheetValue: {
+            events: [Event.onSidebarSubmit],
+            update: {
+              rowMarker: SectionMarker.title,
+              column: 'F',
+              value: PropertyCommand.CURRENT_DATE
+            }
+          }
+        }
       }
     }
   };
@@ -455,9 +473,18 @@ function getStyles(sections) {
       border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
     }, {
       beginColumnOffset: 1,
+      endColumnOffset: 1,
       fontFamily: 'Roboto Mono',
       fontSize: 1,
       fontColor: '#f3f3f3',
+      background: '#f3f3f3',
+      border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
+    }, {
+      numColumns: 1,
+      endColumnOffset: 0,
+      fontFamily: 'Roboto Mono',
+      fontSize: 9,
+      fontColor: null,
       background: '#f3f3f3',
       border: { top: false, left: false, bottom: false, right: false, vertical: false, horizontal: false }
     }],
@@ -518,16 +545,16 @@ function getStyles(sections) {
   return styles;
 }
 
-function getTwoColumnStyles(sections) {
+function getTwoPanelStyles(sections, numLeftColumns=1) {
   let styles = this.getStyles(sections);
   const defaultFontSize = styles.contents[0].fontSize;
   styles.contents[0].fontSize = PropertyCommand.IGNORE;
   styles.contents.push({
     beginColumnOffset: 0,
-    numColumns: 1,
+    numColumns: numLeftColumns,
     fontSize: 12
   }, {
-    beginColumnOffset: 1,
+    beginColumnOffset: numLeftColumns,
     fontSize: defaultFontSize
   });
   return styles;
