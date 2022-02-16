@@ -25,14 +25,9 @@ function getFeatureSheetConfigs() {
 }
 
 function getTimelineConfig() {
-  const styles = state.style.getTimeline([
-    'titles',
-    'headers',
-    'generic',
-    'rowsOutside',
-    'columnsOutside',
-    'matchers'
-  ]);
+  const sections = ['titlesAbove', 'titles', 'headers', 'generic', 'rowBottomOutside', 'columnsOutside', 'matchers']
+  const styles = state.style.getTimeline(sections);
+
   return {
     name: 'Timeline',
     features: {
@@ -115,24 +110,16 @@ function getTimelineConfig() {
         type: 'text',
         title: 'Help',
         text: '1. Use these event typing conventions:<table><tr><td><pre>&nbsp;&nbsp;words?</pre></td><td>dates not yet confirmed</td></tr><tr><td><pre>&nbsp;[words]&nbsp;&nbsp;</pre></td><td>behind-the-scenes, less time-sensitive, or internal/operational</td></tr><tr><td><pre>&nbsp;&nbsp;words*</pre></td><td>holidays, admin or overriding concerns</td></tr></table><br>2. Don\'t edit the grey lane, it is overwritten by Google Calendar events. Either create an event in Google Calendar or invite <a href="mailto:jahya.net_55gagu1o5dmvtkvfrhc9k39tls@group.calendar.google.com">this email address</a> to a Google Calendar event.<br><br>3. Type into the filter box above to hide items from the grey lane below.'
-      }
+      },
+      review: getReviewConfig(SectionMarker.aboveTitle, 'D')
     }
   };
 }
 
 function getCurrentAndyConfig() {
-  const styles = state.style.getDefault([
-    'titles',
-    'titlesAboveBelow',
-    'hiddenValues',
-    'headers',
-    'main',
-    'done',
-    'underMain',
-    'underDone',
-    'rowsOutside',
-    'columnsOutside'
-  ]);
+  const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
+  const styles = state.style.getDefault(sections);
+
   return {
     name: 'Current:Andy',
     features: {
@@ -179,6 +166,7 @@ function getCurrentAndyConfig() {
         title: 'Usage Guidance',
         text: 'This is guidance on Current sheet. It may be several lines of text, or even rich html? Nunc vulputate mauris imperdiet vehicula faucibus. Curabitur facilisis turpis libero, id volutpat velit aliquet a. Curabitur at euismod mi.'
       },
+      review: getReviewConfig(),
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
@@ -281,21 +269,23 @@ function getCyclesConfig() {
           }
         }
       }
+    },
+    sidebar: {
+      guidance: {
+        type: 'text',
+        title: 'Cycles',
+        text: 'Tasks which repeat in cycles. Columns on the left need attention every set number of days, whereas columns on the right occur once per year during season transitions.'
+      },
+      review: getReviewConfig(SectionMarker.title, 'D')
     }
   };
 }
 
 function getMapConfig() {
-  let styles = state.style.getTwoPanel([
-    'titles',
-    'titlesAboveBelow',
-    'headers',
-    'main',
-    'underMain',
-    'rowsOutside',
-    'columnsOutside'
-  ], 2);
-  styles.contents[0].rowHeight = 70;
+  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
+  let styles = state.style.getTwoPanel(sections, 2);
+  styles.contents.all.rowHeight = 70;
+
   return {
     name: 'Map',
     features: {
@@ -310,21 +300,25 @@ function getMapConfig() {
         title: 'Map',
         text: `The 'Map' tab is based loosely around <a href='https://www.mindmapping.com/mind-map'>Mind Maps</a>, in that is is designed to work in harmony the natural functioning of the human mind and get ideas down in a mental tree-like structure.<br><br>All the text fields are free type, no need to worry about whether your edits correctly reference other areas of the dashboard. Just go ahead and start typing in whatever way matches the way things are in your mind.<br><br>There is a hierarchy inherent to mind-mapping but it shouldn't be overthought - arrange things in an intuitive way. Also, there is an inherent prioritization inherent in the positions of branches and twigs, but this doesn't constrain action. The next todo item could right now be on the furthest twig. Instead, arrage things as intuitively as you can.<br><br>The benefit of this tab is it can be referenced when building and updating Todo lists, or to get a fast but comprehensive overview of the set of current concerns.`
       },
-      review: {
-        type: 'buttons',
-        title: 'Last review',
-        options: ['Today'],
-        features: {
-          setSheetValue: {
-            events: [Event.onSidebarSubmit],
-            update: {
-              rowMarker: SectionMarker.title,
-              column: 'F',
-              value: PropertyCommand.CURRENT_DATE
-            }
-          }
+      review: getReviewConfig()
+    }
+  };
+}
+
+function getReviewConfig(rowMarker=SectionMarker.title, column=false) {
+  return {
+    type: 'buttons',
+    title: 'Last review',
+    options: ['Today'],
+    features: {
+      setSheetValue: {
+        events: [Event.onSidebarSubmit],
+        update: {
+          rowMarker: rowMarker,
+          column: column || PropertyCommand.LAST_COLUMN,
+          value: PropertyCommand.CURRENT_DATE
         }
       }
     }
-  };
+  }
 }
