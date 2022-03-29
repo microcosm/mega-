@@ -20,8 +20,10 @@ function getFeatureSheetConfigs() {
     this.getDashboardConfig(),
     this.getTimelineConfig(),
     this.getCurrentAndyConfig(),
+    this.getCurrentJulieConfig(),
     this.getCyclesConfig(),
-    this.getMapConfig()
+    this.getMapConfig(),
+    this.getDailyConfig()
   ];
 }
 
@@ -91,7 +93,7 @@ function getTimelineConfig() {
         events: [Event.onOvernightTimer],
         section: SectionMarker.generic,
         startRowOffset: -1,
-        visibleIfMatch: {
+        visibilityMatcher: {
           column: 'D',
           text: state.today.getFullYear()
         }
@@ -127,7 +129,7 @@ function getTimelineConfig() {
             priority: 'HIGH_PRIORITY',
             section: SectionMarker.generic,
             startRowOffset: -1,
-            visibleIfMatch: {
+            visibilityMatcher: {
               column: 'D',
               text: PropertyCommand.EVENT_DATA
             }
@@ -215,6 +217,116 @@ function getCurrentAndyConfig() {
       heading: {
         type: 'heading',
         title: 'Current:Andy'
+      },
+      review: getReviewConfig(),
+      arrange: {
+        type: 'buttons',
+        title: 'Arrange by',
+        options: ['Timing' , 'Thing'],
+        features: {
+          orderSheetMainSections: {
+            events: [Event.onSidebarSubmit],
+            priority: 'HIGH_PRIORITY',
+            by: {
+              timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
+              thing: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
+            }
+          }
+        }
+      },
+      create: {
+        type: 'buttons',
+        title: 'Create',
+        options: ['Now', 'Next', 'Rolling'],
+        features: {
+          createSheetItem: {
+            events: [Event.onSidebarSubmit],
+            priority: 'HIGH_PRIORITY',
+            getValues: (option) => {
+              const options = { Now: '(1) Now', Next: '(2) Next', Rolling: '(3) Rolling' }
+              const timing = options[option];
+              return ['', '', timing, '', '', '', '', ''];
+            }
+          },
+          setSheetStylesBySection: {
+            events: [Event.onSidebarSubmit],
+            styles: styles
+          },
+        }
+      },
+      archive: {
+        type: 'buttons',
+        title: 'Tidy',
+        options: ['Archive Done Items'],
+        features: {
+          moveSheetRowsToDone: {
+            events: [Event.onSidebarSubmit],
+            from: SectionMarker.main,
+            priority: 'HIGH_PRIORITY',
+            match: {
+              value: ') DONE',
+              column: 'D'
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
+function getCurrentJulieConfig() {
+  const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
+  const styles = state.style.getDefault(sections);
+  styles.headers.all.fontSize = PropertyCommand.IGNORE;
+  styles.headers.left = { fontSize: 13, beginColumnOffset: 0, numColumns: 3 };
+  styles.headers.middle = { fontSize: 9, beginColumnOffset: 3, numColumns: 3 };
+  styles.headers.right = { fontSize: 13, beginColumnOffset: 6 };
+  styles.contents.all.rowHeight = 36;
+
+  return {
+    name: 'Current:Julie',
+    features: {
+      copySheetEventsToCalendar: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer],
+        username: 'Julie',
+        priority: 'HIGH_PRIORITY',
+        sheetIdForUrl: '1370791528',
+        workDateLabel: 'Work date',
+        eventValidator: {
+          method: (row, data, columns) => {
+            const timing = row[columns.zeroBasedIndices.timing];
+            return data.valid.filter(v => timing.endsWith(v)).length === 1;
+          },
+          data: { valid: [') Now', ') Next'] }
+        },
+        widgetCategories: {
+          current: {
+            name: { column: 'C', rowOffset: -1 },
+            columns: {
+              noun: 'B',
+              verb: 'C',
+              timing: 'D',
+              workDate: 'E',
+              startTime: 'F',
+              durationHours: 'G'
+            }
+          }
+        }
+      },
+      setSheetStylesBySection: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
+        styles: styles
+      },
+      setSheetGroupsBySection: {
+        events: [Event.onOvernightTimer],
+        section: SectionMarker.done,
+        numRowsToDisplay: 3
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Current:Julie'
       },
       review: getReviewConfig(),
       arrange: {
@@ -371,6 +483,64 @@ function getMapConfig() {
         type: 'ul',
         title: 'Guidance',
         texts: [`All text fields are free type`, `Don't overthink - should reflect what's on your mind`, `Come here occasionally for a new "grab bag" of items for "Current" sheets`, `Inspired by the idea of <a href='https://www.mindmapping.com/mind-map'>Mind Maps</a>`]
+      }
+    }
+  };
+}
+
+function getDailyConfig() {
+  const sections = ['titles', 'headers', 'generic', 'rowsOutside', 'columnsOutside'];
+  let styles = state.style.getBare(sections);
+
+  return {
+    name: 'Daily',
+    features: {
+      setSheetStylesBySection: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
+        styles: styles
+      },
+      setSheetHiddenRowsBySection: {
+        events: [Event.onOvernightTimer],
+        section: SectionMarker.generic,
+        startRowOffset: -1,
+        visibilityMatcher: {
+          column: 'B',
+          text: getMondayThisWeek()
+        }
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Daily'
+      },
+      years: {
+        type: 'buttons',
+        title: 'Display',
+        options: ['This Week', 'Last Week', 'This Year', 'All'],
+        features: {
+          setSheetHiddenRowsBySection: {
+            events: [Event.onSidebarSubmit],
+            priority: 'HIGH_PRIORITY',
+            section: SectionMarker.generic,
+            startRowOffset: -1,
+            visibilityMatcher: {
+              column: 'B',
+              method: (cellValue, option) => {
+                if(option === 'All') return true;
+                if(option === 'This Week') return isMatch(cellValue, getMondayThisWeek());
+                if(option === 'Last Week') return isMatch(cellValue, getMondayLastWeek());
+                const cellDate = new Date(cellValue);
+                return cellDate.getFullYear() === state.today.getFullYear();
+              }
+            }
+          }
+        }
+      },
+      guidance: {
+        type: 'text',
+        title: 'Guidance',
+        text: 'Use these labels in time fields:<table><tr><td><pre>&nbsp;&nbsp;↵&nbsp;&nbsp;</pre></td><td>next event / newline</td></tr><tr><td><pre>&nbsp;&nbsp;x&nbsp;&nbsp;</pre></td><td>no data</td></tr><tr></table>'
       }
     }
   };
