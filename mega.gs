@@ -245,7 +245,7 @@ function getCurrentAndyConfig() {
             getValues: (option) => {
               const options = { Now: '(1) Now', Next: '(2) Next', Rolling: '(3) Rolling' }
               const timing = options[option];
-              return ['', '', timing, '', '', '', '', ''];
+              return ['', '', timing, '', '', '', ''];
             }
           },
           setSheetStylesBySection: {
@@ -355,7 +355,7 @@ function getCurrentJulieConfig() {
             getValues: (option) => {
               const options = { Now: '(1) Now', Next: '(2) Next', Rolling: '(3) Rolling' }
               const timing = options[option];
-              return ['', '', timing, '', '', '', '', ''];
+              return ['', '', timing, '', '', '', ''];
             }
           },
           setSheetStylesBySection: {
