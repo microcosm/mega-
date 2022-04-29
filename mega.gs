@@ -187,7 +187,7 @@ function getCurrentAndyConfig() {
             const timing = row[columns.zeroBasedIndices.timing];
             return data.valid.filter(v => timing.endsWith(v)).length === 1;
           },
-          data: { valid: [') Now', ') Next'] }
+          data: { valid: [') Time Sensitive', ') Time Flexible'] }
         },
         widgetCategories: {
           current: {
@@ -237,13 +237,17 @@ function getCurrentAndyConfig() {
       create: {
         type: 'buttons',
         title: 'Create',
-        options: ['Now', 'Next', 'Rolling'],
+        options: ['Time Sensitive', 'Time Flexible', 'Rolling'],
         features: {
           createSheetItem: {
             events: [Event.onSidebarSubmit],
             priority: 'HIGH_PRIORITY',
             getValues: (option) => {
-              const options = { Now: '(1) Now', Next: '(2) Next', Rolling: '(3) Rolling' }
+              const options = {
+                'Time Sensitive': '(1) Time Sensitive',
+                'Time Flexible':  '(2) Time Flexible',
+                'Rolling':        '(3) Rolling'
+              };
               const timing = options[option];
               return ['', '', timing, '', '', '', ''];
             }
@@ -297,7 +301,7 @@ function getCurrentJulieConfig() {
             const timing = row[columns.zeroBasedIndices.timing];
             return data.valid.filter(v => timing.endsWith(v)).length === 1;
           },
-          data: { valid: [') Now', ') Next'] }
+          data: { valid: [') Time Sensitive', ') Time Flexible'] }
         },
         widgetCategories: {
           current: {
@@ -347,13 +351,17 @@ function getCurrentJulieConfig() {
       create: {
         type: 'buttons',
         title: 'Create',
-        options: ['Now', 'Next', 'Rolling'],
+        options: ['Time Sensitive', 'Time Flexible', 'Rolling'],
         features: {
           createSheetItem: {
             events: [Event.onSidebarSubmit],
             priority: 'HIGH_PRIORITY',
             getValues: (option) => {
-              const options = { Now: '(1) Now', Next: '(2) Next', Rolling: '(3) Rolling' }
+              const options = {
+                'Time Sensitive': '(1) Time Sensitive',
+                'Time Flexible':  '(2) Time Flexible',
+                'Rolling':        '(3) Rolling'
+              };
               const timing = options[option];
               return ['', '', timing, '', '', '', ''];
             }
