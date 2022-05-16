@@ -222,14 +222,14 @@ function getCurrentAndyConfig() {
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
-        options: ['Timing' , 'Thing'],
+        options: ['Timing' , 'Category'],
         features: {
           orderSheetMainSections: {
             events: [Event.onSidebarSubmit],
             priority: 'HIGH_PRIORITY',
             by: {
               timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
-              thing: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
+              category: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
             }
           }
         }
@@ -336,14 +336,14 @@ function getCurrentJulieConfig() {
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
-        options: ['Timing' , 'Thing'],
+        options: ['Timing' , 'Category'],
         features: {
           orderSheetMainSections: {
             events: [Event.onSidebarSubmit],
             priority: 'HIGH_PRIORITY',
             by: {
               timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
-              thing: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
+              category: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
             }
           }
         }
