@@ -187,7 +187,7 @@ function getCurrentAndyConfig() {
             const timing = row[columns.zeroBasedIndices.timing];
             return data.valid.filter(v => timing.endsWith(v)).length === 1;
           },
-          data: { valid: [') Time Sensitive', ') Time Flexible'] }
+          data: { valid: [') Priority', ') Following'] }
         },
         widgetCategories: {
           current: {
@@ -237,16 +237,16 @@ function getCurrentAndyConfig() {
       create: {
         type: 'buttons',
         title: 'Create',
-        options: ['Time Sensitive', 'Time Flexible', 'Rolling'],
+        options: ['Priority', 'Following', 'Rolling'],
         features: {
           createSheetItem: {
             events: [Event.onSidebarSubmit],
             priority: 'HIGH_PRIORITY',
             getValues: (option) => {
               const options = {
-                'Time Sensitive': '(1) Time Sensitive',
-                'Time Flexible':  '(2) Time Flexible',
-                'Rolling':        '(3) Rolling'
+                'Priority':  '(1) Priority',
+                'Following': '(2) Following',
+                'Rolling':   '(3) Rolling'
               };
               const timing = options[option];
               return ['', '', timing, '', '', '', ''];
@@ -301,7 +301,7 @@ function getCurrentJulieConfig() {
             const timing = row[columns.zeroBasedIndices.timing];
             return data.valid.filter(v => timing.endsWith(v)).length === 1;
           },
-          data: { valid: [') Time Sensitive', ') Time Flexible'] }
+          data: { valid: [') Priority', ') Following'] }
         },
         widgetCategories: {
           current: {
@@ -351,16 +351,16 @@ function getCurrentJulieConfig() {
       create: {
         type: 'buttons',
         title: 'Create',
-        options: ['Time Sensitive', 'Time Flexible', 'Rolling'],
+        options: ['Priority', 'Following', 'Rolling'],
         features: {
           createSheetItem: {
             events: [Event.onSidebarSubmit],
             priority: 'HIGH_PRIORITY',
             getValues: (option) => {
               const options = {
-                'Time Sensitive': '(1) Time Sensitive',
-                'Time Flexible':  '(2) Time Flexible',
-                'Rolling':        '(3) Rolling'
+                'Priority':  '(1) Priority',
+                'Following': '(2) Following',
+                'Rolling':   '(3) Rolling'
               };
               const timing = options[option];
               return ['', '', timing, '', '', '', ''];
