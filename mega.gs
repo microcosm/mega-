@@ -22,8 +22,7 @@ function getFeatureSheetConfigs() {
     this.getCurrentAndyConfig(),
     this.getCurrentJulieConfig(),
     this.getCyclesConfig(),
-    this.getMapConfig(),
-    this.getDailyConfig()
+    this.getMapConfig()
   ];
 }
 
@@ -491,64 +490,6 @@ function getMapConfig() {
         type: 'ul',
         title: 'Guidance',
         texts: [`All text fields are free type`, `Don't overthink - should reflect what's on your mind`, `Come here occasionally for a new "grab bag" of items for "Current" sheets`, `Inspired by the idea of <a href='https://www.mindmapping.com/mind-map'>Mind Maps</a>`]
-      }
-    }
-  };
-}
-
-function getDailyConfig() {
-  const sections = ['titles', 'headers', 'generic', 'rowsOutside', 'columnsOutside'];
-  let styles = state.style.getBare(sections);
-
-  return {
-    name: 'Daily',
-    features: {
-      setSheetStylesBySection: {
-        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
-        styles: styles
-      },
-      setSheetHiddenRowsBySection: {
-        events: [Event.onOvernightTimer],
-        section: SectionMarker.generic,
-        startRowOffset: -1,
-        visibilityMatcher: {
-          column: 'B',
-          text: getMondayThisWeek()
-        }
-      }
-    },
-    sidebar: {
-      heading: {
-        type: 'heading',
-        title: 'Daily'
-      },
-      years: {
-        type: 'buttons',
-        title: 'Display',
-        options: ['This Week', 'Last Week', 'This Year', 'All'],
-        features: {
-          setSheetHiddenRowsBySection: {
-            events: [Event.onSidebarSubmit],
-            priority: 'HIGH_PRIORITY',
-            section: SectionMarker.generic,
-            startRowOffset: -1,
-            visibilityMatcher: {
-              column: 'B',
-              method: (cellValue, option) => {
-                if(option === 'All') return true;
-                if(option === 'This Week') return isMatch(cellValue, getMondayThisWeek());
-                if(option === 'Last Week') return isMatch(cellValue, getMondayLastWeek());
-                const cellDate = new Date(cellValue);
-                return cellDate.getFullYear() === state.today.getFullYear();
-              }
-            }
-          }
-        }
-      },
-      guidance: {
-        type: 'text',
-        title: 'Guidance',
-        text: 'Use these labels in time fields:<table><tr><td><pre>&nbsp;&nbsp;↵&nbsp;&nbsp;</pre></td><td>next event / newline</td></tr><tr><td><pre>&nbsp;&nbsp;x&nbsp;&nbsp;</pre></td><td>no data</td></tr><tr></table>'
       }
     }
   };
