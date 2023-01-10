@@ -223,8 +223,9 @@ function getCurrentAndyConfig() {
         title: 'Arrange by',
         options: ['Timing' , 'Category'],
         features: {
-          orderSheetMainSections: {
+          orderSheetSections: {
             events: [Event.onSidebarSubmit],
+            sections: SectionsCategory.MAIN,
             priority: 'HIGH_PRIORITY',
             by: {
               timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
@@ -337,8 +338,9 @@ function getCurrentJulieConfig() {
         title: 'Arrange by',
         options: ['Timing' , 'Category'],
         features: {
-          orderSheetMainSections: {
+          orderSheetSections: {
             events: [Event.onSidebarSubmit],
+            sections: SectionsCategory.MAIN,
             priority: 'HIGH_PRIORITY',
             by: {
               timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
