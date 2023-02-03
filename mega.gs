@@ -20,7 +20,6 @@ function getFeatureSheetConfigs() {
     this.getDashboardConfig(),
     this.getTimelineConfig(),
     this.getCurrentAndyConfig(),
-    this.getCurrentJulieConfig(),
     this.getCyclesConfig(),
     this.getMapConfig()
   ];
@@ -216,121 +215,6 @@ function getCurrentAndyConfig() {
       heading: {
         type: 'heading',
         title: 'Current:Andy'
-      },
-      review: getReviewConfig(),
-      arrange: {
-        type: 'buttons',
-        title: 'Arrange by',
-        options: ['Timing' , 'Category'],
-        features: {
-          orderSheetSections: {
-            events: [Event.onSidebarSubmit],
-            sections: SectionsCategory.MAIN,
-            priority: 'HIGH_PRIORITY',
-            by: {
-              timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
-              category: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
-            }
-          }
-        }
-      },
-      create: {
-        type: 'buttons',
-        title: 'Create',
-        options: ['Priority', 'Following', 'Rolling'],
-        features: {
-          createSheetItem: {
-            events: [Event.onSidebarSubmit],
-            priority: 'HIGH_PRIORITY',
-            getValues: (option) => {
-              const options = {
-                'Priority':  '(1) Priority',
-                'Following': '(2) Following',
-                'Rolling':   '(3) Rolling'
-              };
-              const timing = options[option];
-              return ['', '', timing, '', '', '', ''];
-            }
-          },
-          setSheetStylesBySection: {
-            events: [Event.onSidebarSubmit],
-            styles: styles
-          },
-        }
-      },
-      archive: {
-        type: 'buttons',
-        title: 'Tidy',
-        options: ['Archive Done Items'],
-        features: {
-          moveSheetRowsToDone: {
-            events: [Event.onSidebarSubmit],
-            from: SectionMarker.main,
-            priority: 'HIGH_PRIORITY',
-            match: {
-              value: ') DONE',
-              column: 'D'
-            }
-          }
-        }
-      }
-    }
-  };
-}
-
-function getCurrentJulieConfig() {
-  const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
-  const styles = state.style.getDefault(sections);
-  styles.headers.all.fontSize = PropertyCommand.IGNORE;
-  styles.headers.left = { fontSize: 13, beginColumnOffset: 0, numColumns: 3 };
-  styles.headers.middle = { fontSize: 9, beginColumnOffset: 3, numColumns: 3 };
-  styles.headers.right = { fontSize: 13, beginColumnOffset: 6 };
-  styles.contents.all.rowHeight = 36;
-
-  return {
-    name: 'Current:Julie',
-    features: {
-      copySheetEventsToCalendar: {
-        events: [Event.onSheetEdit, Event.onOvernightTimer],
-        username: 'Julie',
-        priority: 'HIGH_PRIORITY',
-        sheetIdForUrl: '1370791528',
-        workDateLabel: 'Work date',
-        eventValidator: {
-          method: (row, data, columns) => {
-            const timing = row[columns.zeroBasedIndices.timing];
-            return data.valid.filter(v => timing.endsWith(v)).length === 1;
-          },
-          data: { valid: [') Priority', ') Following'] }
-        },
-        widgetCategories: {
-          current: {
-            name: { column: 'C', rowOffset: -1 },
-            columns: {
-              noun: 'B',
-              verb: 'C',
-              timing: 'D',
-              workDate: 'E',
-              startTime: 'F',
-              durationHours: 'G'
-            }
-          }
-        }
-      },
-      setSheetStylesBySection: {
-        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
-        styles: styles
-      },
-      setSheetGroupsBySection: {
-        events: [Event.onOvernightTimer],
-        section: SectionMarker.done,
-        numRowsToDisplay: 3
-      }
-    },
-    sidebar: {
-      heading: {
-        type: 'heading',
-        title: 'Current:Julie'
       },
       review: getReviewConfig(),
       arrange: {
