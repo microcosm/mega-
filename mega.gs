@@ -240,9 +240,13 @@ function getCyclesConfig() {
 }
 
 function getMaintainConfig() {
-  const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
-  const styles = state.style.getThreePanel(sections, 2, 7);
-  styles.contents.all.rowHeight = 36;
+  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
+  const styles = state.style.getFourPanel(sections, 3, 5, 1);
+  styles.contents.all.rowHeight = 30;
+  styles.contents.all.fontSize = 9;
+  styles.titles.between.endColumnOffset = 2;
+  styles.titles.review.endColumnOffset = 1;
+  styles.titles.after = state.style.getBlank({ endColumnOffset: 0, numColumns: 1, border: state.style.border.empty });
 
   return {
     name: 'Maintain',
@@ -257,7 +261,7 @@ function getMaintainConfig() {
         type: 'heading',
         title: 'Maintain'
       },
-      review: getReviewConfig(),
+      review: getReviewConfig(SectionMarker.title, 'K'),
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
