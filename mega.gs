@@ -244,6 +244,7 @@ function getMaintainConfig() {
   const styles = state.style.getFourPanel(sections, 3, 5, 1);
   styles.contents.all.rowHeight = 30;
   styles.contents.all.fontSize = 9;
+  styles.contents.doneDate = { beginColumnOffset: 2, numColumns: 1, border: state.style.border.thickPanelDivider };
   styles.titles.between.endColumnOffset = 2;
   styles.titles.review.endColumnOffset = 1;
   styles.titles.after = state.style.getBlank({ endColumnOffset: 0, numColumns: 1, border: state.style.border.empty });
@@ -273,21 +274,19 @@ function getMaintainConfig() {
             priority: 'HIGH_PRIORITY',
             by: {
               priority: [
-                { column: 'J', direction: 'ascending' },
-                { column: 'G', direction: 'ascending' },
+                { column: 'L', direction: 'ascending' },
                 { column: 'H', direction: 'ascending' },
-                { column: 'E', direction: 'descending' },
-                { column: 'I', direction: 'ascending' },
+                { column: 'G', direction: 'ascending' },
+                { column: 'F', direction: 'descending' },
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
               ],
               category: [
-                { column: 'K', direction: 'ascending' },
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
               ],
               season: [
-                { column: 'I', direction: 'ascending' },
+                { column: 'K', direction: 'ascending' },
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
               ]
