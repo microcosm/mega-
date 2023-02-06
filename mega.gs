@@ -19,8 +19,9 @@ function getFeatureSheetConfigs() {
   return [
     this.getDashboardConfig(),
     this.getTimelineConfig(),
-    this.getCurrentAndyConfig(),
     this.getCyclesConfig(),
+    this.getMaintainConfig(),
+    this.getCurrentAndyConfig(),
     this.getMapConfig()
   ];
 }
@@ -162,6 +163,138 @@ function getTimelineConfig() {
   };
 }
 
+function getCyclesConfig() {
+  return {
+    name: 'Cycles',
+    features: {
+      copySheetEventsToCalendar: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer],
+        priority: 'HIGH_PRIORITY',
+        workDateLabel: 'Work date',
+        sheetIdForUrl: '966806031',
+        widgetValidator: {
+          method: (widgetName, sheet, data) => {
+            if(widgetName === 'Evergreen') return true;
+            const seasonStr = sheet.getValue(data.row.cardinalIndex, data.column.cardinalIndex);
+            if(widgetName === seasonStr) return true;
+            const toSeason = seasonStr.substring(seasonStr.length - data.strLength);
+            if(widgetName === toSeason) return true;
+            return false;
+          },
+          data: { strLength: 6, column: 'O', row: 2 }
+        },
+        eventValidator: {
+          method: (row, data, columns, widgetCategory) => {
+            if(widgetCategory !== 'checklist') return true;
+            const done = row[columns.zeroBasedIndices.done];
+            return done === data.valid;
+          },
+          data: { valid: 'No' }
+        },
+        widgetCategories: {
+          cyclical: {
+            name: {
+              column: 'B',
+              rowOffset: -1
+            },
+            columns: {
+              noun: 'B',
+              verb: 'C',
+              name: 'F',
+              startTime: 'L',
+              durationHours: 'M',
+              workDate: 'N'
+            }
+          },
+          checklist: {
+            name: {
+              column: 'Q',
+              rowOffset: -1
+            },
+            columns: {
+              noun: 'Q',
+              verb: 'R',
+              name: 'U',
+              done: 'S',
+              workDate: 'V',
+              startTime: 'W',
+              durationHours: 'X'
+            }
+          }
+        }
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Triggers'
+      },
+      review: getReviewConfig(SectionMarker.title, 'D'),
+      guidance: {
+        type: 'text',
+        title: 'Guidance',
+        text: 'Tasks which repeat in cycles. Columns on the left need attention every set number of days, whereas columns on the right occur once per year during season transitions.'
+      },
+    }
+  };
+}
+
+function getMaintainConfig() {
+  const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
+  const styles = state.style.getThreePanel(sections, 2, 7);
+  styles.contents.all.rowHeight = 36;
+
+  return {
+    name: 'Maintain',
+    features: {
+      setSheetStylesBySection: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
+        styles: styles
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Maintain'
+      },
+      review: getReviewConfig(),
+      arrange: {
+        type: 'buttons',
+        title: 'Arrange by',
+        options: ['Priority', 'Category', 'Season'],
+        features: {
+          orderSheetSections: {
+            events: [Event.onSidebarSubmit],
+            sections: SectionsCategory.MAIN,
+            priority: 'HIGH_PRIORITY',
+            by: {
+              priority: [
+                { column: 'J', direction: 'ascending' },
+                { column: 'G', direction: 'ascending' },
+                { column: 'H', direction: 'ascending' },
+                { column: 'E', direction: 'descending' },
+                { column: 'I', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' },
+                { column: 'C', direction: 'ascending' }
+              ],
+              category: [
+                { column: 'K', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' },
+                { column: 'C', direction: 'ascending' }
+              ],
+              season: [
+                { column: 'I', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' },
+                { column: 'C', direction: 'ascending' }
+              ]
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
 function getCurrentAndyConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
   const styles = state.style.getDefault(sections);
@@ -273,82 +406,6 @@ function getCurrentAndyConfig() {
           }
         }
       }
-    }
-  };
-}
-
-function getCyclesConfig() {
-  return {
-    name: 'Cycles',
-    features: {
-      copySheetEventsToCalendar: {
-        events: [Event.onSheetEdit, Event.onOvernightTimer],
-        priority: 'HIGH_PRIORITY',
-        workDateLabel: 'Work date',
-        sheetIdForUrl: '966806031',
-        widgetValidator: {
-          method: (widgetName, sheet, data) => {
-            if(widgetName === 'Evergreen') return true;
-            const seasonStr = sheet.getValue(data.row.cardinalIndex, data.column.cardinalIndex);
-            if(widgetName === seasonStr) return true;
-            const toSeason = seasonStr.substring(seasonStr.length - data.strLength);
-            if(widgetName === toSeason) return true;
-            return false; 
-          },
-          data: { strLength: 6, column: 'O', row: 2 }
-        },
-        eventValidator: {
-          method: (row, data, columns, widgetCategory) => {
-            if(widgetCategory !== 'checklist') return true;
-            const done = row[columns.zeroBasedIndices.done];
-            return done === data.valid;
-          },
-          data: { valid: 'No' }
-        },
-        widgetCategories: {
-          cyclical: {
-            name: {
-              column: 'B',
-              rowOffset: -1
-            },
-            columns: {
-              noun: 'B',
-              verb: 'C',
-              name: 'F',
-              startTime: 'L',
-              durationHours: 'M',
-              workDate: 'N'
-            }
-          },
-          checklist: {
-            name: {
-              column: 'Q',
-              rowOffset: -1
-            },
-            columns: {
-              noun: 'Q',
-              verb: 'R',
-              name: 'U',
-              done: 'S',
-              workDate: 'V',
-              startTime: 'W',
-              durationHours: 'X'
-            }
-          }
-        }
-      }
-    },
-    sidebar: {
-      heading: {
-        type: 'heading',
-        title: 'Triggers'
-      },
-      review: getReviewConfig(SectionMarker.title, 'D'),
-      guidance: {
-        type: 'text',
-        title: 'Guidance',
-        text: 'Tasks which repeat in cycles. Columns on the left need attention every set number of days, whereas columns on the right occur once per year during season transitions.'
-      },
     }
   };
 }
