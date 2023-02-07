@@ -19,7 +19,6 @@ function getFeatureSheetConfigs() {
   return [
     this.getDashboardConfig(),
     this.getTimelineConfig(),
-    this.getCyclesConfig(),
     this.getMaintainConfig(),
     this.getCurrentAndyConfig(),
     this.getMapConfig()
@@ -159,82 +158,6 @@ function getTimelineConfig() {
         title: 'More help',
         text: '1. Use these event typing conventions:<table><tr><td><pre>&nbsp;&nbsp;words?</pre></td><td>dates not yet confirmed</td></tr><tr><td><pre>&nbsp;[words]&nbsp;&nbsp;</pre></td><td>behind-the-scenes, less time-sensitive, or internal/operational</td></tr><tr><td><pre>&nbsp;&nbsp;words*</pre></td><td>holidays, admin or overriding concerns</td></tr></table><br>2. Don\'t edit the grey lane, it is overwritten by Google Calendar events. Either create an event in Google Calendar or invite <a href="mailto:fidt265p24ci7gpcv424d0d5kk@group.calendar.google.com">this email address</a> to a Google Calendar event.<br><br>3. Type into the filter box above to hide items from the grey lane below, or put [brackets] around the event title in GCal.'
       }
-    }
-  };
-}
-
-function getCyclesConfig() {
-  return {
-    name: 'Cycles',
-    features: {
-      copySheetEventsToCalendar: {
-        events: [Event.onSheetEdit, Event.onOvernightTimer],
-        priority: 'HIGH_PRIORITY',
-        workDateLabel: 'Work date',
-        sheetIdForUrl: '966806031',
-        widgetValidator: {
-          method: (widgetName, sheet, data) => {
-            if(widgetName === 'Evergreen') return true;
-            const seasonStr = sheet.getValue(data.row.cardinalIndex, data.column.cardinalIndex);
-            if(widgetName === seasonStr) return true;
-            const toSeason = seasonStr.substring(seasonStr.length - data.strLength);
-            if(widgetName === toSeason) return true;
-            return false;
-          },
-          data: { strLength: 6, column: 'O', row: 2 }
-        },
-        eventValidator: {
-          method: (row, data, columns, widgetCategory) => {
-            if(widgetCategory !== 'checklist') return true;
-            const done = row[columns.zeroBasedIndices.done];
-            return done === data.valid;
-          },
-          data: { valid: 'No' }
-        },
-        widgetCategories: {
-          cyclical: {
-            name: {
-              column: 'B',
-              rowOffset: -1
-            },
-            columns: {
-              noun: 'B',
-              verb: 'C',
-              name: 'F',
-              startTime: 'L',
-              durationHours: 'M',
-              workDate: 'N'
-            }
-          },
-          checklist: {
-            name: {
-              column: 'Q',
-              rowOffset: -1
-            },
-            columns: {
-              noun: 'Q',
-              verb: 'R',
-              name: 'U',
-              done: 'S',
-              workDate: 'V',
-              startTime: 'W',
-              durationHours: 'X'
-            }
-          }
-        }
-      }
-    },
-    sidebar: {
-      heading: {
-        type: 'heading',
-        title: 'Triggers'
-      },
-      review: getReviewConfig(SectionMarker.title, 'D'),
-      guidance: {
-        type: 'text',
-        title: 'Guidance',
-        text: 'Tasks which repeat in cycles. Columns on the left need attention every set number of days, whereas columns on the right occur once per year during season transitions.'
-      },
     }
   };
 }
