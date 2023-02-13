@@ -178,6 +178,18 @@ function getMaintainConfig() {
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
         styles: styles
+      },
+      orderSheetSections: {
+        events: [Event.onOvernightTimer],
+        sections: SectionsCategory.MAIN,
+        order: [
+          { column: 'L', direction: 'ascending' },
+          { column: 'H', direction: 'ascending' },
+          { column: 'G', direction: 'ascending' },
+          { column: 'F', direction: 'descending' },
+          { column: 'B', direction: 'ascending' },
+          { column: 'C', direction: 'ascending' }
+        ]
       }
     },
     sidebar: {
