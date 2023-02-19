@@ -164,13 +164,14 @@ function getTimelineConfig() {
 
 function getMaintainConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
-  const styles = state.style.getFourPanel(sections, 3, 5, 1);
+  const styles = state.style.getFourPanel(sections, 3, 6, 1);
   styles.contents.all.rowHeight = 30;
   styles.contents.all.fontSize = 9;
   styles.contents.doneDate = { beginColumnOffset: 2, numColumns: 1, border: state.style.border.thickPanelDivider };
   styles.titles.between.endColumnOffset = 2;
   styles.titles.review.endColumnOffset = 1;
   styles.titles.after = state.style.getBlank({ endColumnOffset: 0, numColumns: 1, border: state.style.border.empty });
+  styles.headers.details = { beginColumnOffset: 3, numColumns: 4, fontSize: 9 };
 
   return {
     name: 'Maintain',
@@ -183,10 +184,10 @@ function getMaintainConfig() {
         events: [Event.onOvernightTimer],
         sections: SectionsCategory.MAIN,
         order: [
-          { column: 'L', direction: 'ascending' },
+          { column: 'M', direction: 'ascending' },
+          { column: 'I', direction: 'ascending' },
           { column: 'H', direction: 'ascending' },
-          { column: 'G', direction: 'ascending' },
-          { column: 'F', direction: 'descending' },
+          { column: 'G', direction: 'descending' },
           { column: 'B', direction: 'ascending' },
           { column: 'C', direction: 'ascending' }
         ]
@@ -209,10 +210,10 @@ function getMaintainConfig() {
             priority: 'HIGH_PRIORITY',
             by: {
               priority: [
-                { column: 'L', direction: 'ascending' },
+                { column: 'M', direction: 'ascending' },
+                { column: 'I', direction: 'ascending' },
                 { column: 'H', direction: 'ascending' },
-                { column: 'G', direction: 'ascending' },
-                { column: 'F', direction: 'descending' },
+                { column: 'G', direction: 'descending' },
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
               ],
@@ -221,7 +222,7 @@ function getMaintainConfig() {
                 { column: 'C', direction: 'ascending' }
               ],
               season: [
-                { column: 'K', direction: 'ascending' },
+                { column: 'L', direction: 'ascending' },
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
               ]
