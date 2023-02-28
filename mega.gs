@@ -171,7 +171,7 @@ function getMaintainConfig() {
   styles.titles.between.endColumnOffset = 2;
   styles.titles.review.endColumnOffset = 1;
   styles.titles.after = state.style.getBlank({ endColumnOffset: 0, numColumns: 1, border: state.style.border.empty });
-  styles.headers.details = { beginColumnOffset: 3, numColumns: 4, fontSize: 9 };
+  styles.headers.smaller = { beginColumnOffset: 2, numColumns: 5, fontSize: 9 };
 
   return {
     name: 'Maintain',
