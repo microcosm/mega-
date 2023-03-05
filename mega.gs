@@ -198,7 +198,7 @@ function getMaintainConfig() {
         type: 'heading',
         title: 'Maintain'
       },
-      review: getReviewConfig(SectionMarker.title, 'K'),
+      review: getReviewConfig(SectionMarker.title, 'L'),
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
