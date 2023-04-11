@@ -1,7 +1,7 @@
 function getSpreadsheetConfig() {
   return {
     name: 'mega—',
-    id: '1uNxspHrfm9w-DPH1wfhTNdySxupd7h1RFrWlHCYPVcs'
+    id: '15VNTi90yus1Sdzbivx-4LSZyLDCvfrWt9ApbWDOcjMQ'
   };
 }
 
