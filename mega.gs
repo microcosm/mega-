@@ -66,6 +66,8 @@ function getTimelineConfig() {
   const styles = state.style.getTimeline(sections);
   styles.contents.main.rowHeight = 48;
 
+  let birthdayRange, birthdayRangeValues = null;
+
   return {
     name: 'Timeline',
     features: {
@@ -81,7 +83,22 @@ function getTimelineConfig() {
         isValidEvent: (event) => {
           const title = event.getTitle();
           return !(title.startsWith('[') && title.endsWith(']'));
-        }
+        },
+        customSetupSheetState: (sheet, data) => {
+          const birthdayColumnIndex = 13; // 'M'   ??
+          birthdayRange = sheet.sheetRef.getRange(data.beginRow, birthdayColumnIndex, data.numRows, 1);
+          birthdayRangeValues = birthdayRange.getValues();
+        },
+        customProcessWeek: (weekIndex, data) => {
+          const birthdays = data.calendarEventsThisWeek
+            .filter(calendarEvent => calendarEvent.title.toLowerCase().endsWith(` birthday`) && calendarEvent.title.includes(`'`))
+            .map(calendarEvent => calendarEvent.title.split(`'`)[0] + ' (' + calendarEvent.startDateTime.getDayStr() + ')')
+            .join(',\n');
+          birthdayRangeValues[weekIndex][0] = birthdays.length > 0 ? birthdays + ' *' : '';
+        },
+        customUpdateSheet: () => {
+          birthdayRange.setValues(birthdayRangeValues);
+        },
       },
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
