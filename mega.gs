@@ -65,6 +65,14 @@ function getTimelineConfig() {
   const sections = ['titlesAbove', 'titles', 'headers', 'generic', 'rowBottomOutside', 'columnsOutside', 'rowMatchers']
   const styles = state.style.getTimeline(sections);
   styles.contents.main.rowHeight = 48;
+  styles.contents.keyDates = {
+    endColumnOffset: 2,
+    borders: [{ top: null, left: true, bottom: null, right: true, vertical: null, horizontal: null, color: '#666666', style: 'SOLID_MEDIUM' }]
+  }
+  styles.contents.planning = {
+    endColumnOffset: 5,
+    borders: [{ top: null, left: true, bottom: null, right: true, vertical: null, horizontal: null, color: '#666666', style: 'SOLID_MEDIUM' }]
+  }
 
   let birthdayRange, birthdayRangeValues = null;
 
