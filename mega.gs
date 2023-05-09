@@ -19,9 +19,10 @@ function getFeatureSheetConfigs() {
   return [
     this.getDashboardConfig(),
     this.getTimelineConfig(),
-    this.getMaintainConfig(),
-    this.getCurrentAndyConfig(),
-    this.getMapConfig()
+    this.getMaintenanceConfig(),
+    this.getTasksConfig(),
+    this.getProjectsConfig(),
+    this.getLinksConfig()
   ];
 }
 
@@ -187,7 +188,7 @@ function getTimelineConfig() {
   };
 }
 
-function getMaintainConfig() {
+function getMaintenanceConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
   const styles = state.style.getFourPanel(sections, 3, 6, 1);
   styles.contents.all.rowHeight = 30;
@@ -199,7 +200,7 @@ function getMaintainConfig() {
   styles.headers.smaller = { beginColumnOffset: 2, numColumns: 5, fontSize: 9 };
 
   return {
-    name: 'Maintain',
+    name: 'Maintenance',
     features: {
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
@@ -221,20 +222,20 @@ function getMaintainConfig() {
     sidebar: {
       heading: {
         type: 'heading',
-        title: 'Maintain'
+        title: 'Maintenance'
       },
       review: getReviewConfig(SectionMarker.title, 'L'),
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
-        options: ['Priority', 'Category', 'Season'],
+        options: ['Due', 'Category', 'When'],
         features: {
           orderSheetSections: {
             events: [Event.onSidebarSubmit],
             sections: SectionsCategory.MAIN,
             priority: 'HIGH_PRIORITY',
             by: {
-              priority: [
+              due: [
                 { column: 'M', direction: 'ascending' },
                 { column: 'I', direction: 'ascending' },
                 { column: 'H', direction: 'ascending' },
@@ -246,7 +247,7 @@ function getMaintainConfig() {
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
               ],
-              season: [
+              when: [
                 { column: 'L', direction: 'ascending' },
                 { column: 'B', direction: 'ascending' },
                 { column: 'C', direction: 'ascending' }
@@ -259,99 +260,63 @@ function getMaintainConfig() {
   };
 }
 
-function getCurrentAndyConfig() {
+function getTasksConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'hiddenValues', 'headers', 'main', 'done', 'underMain', 'underDone', 'rowsOutside', 'columnsOutside'];
   const styles = state.style.getDefault(sections);
-  styles.headers.all.fontSize = PropertyCommand.IGNORE;
-  styles.headers.left = { fontSize: 13, beginColumnOffset: 0, numColumns: 3 };
-  styles.headers.middle = { fontSize: 9, beginColumnOffset: 3, numColumns: 3 };
-  styles.headers.right = { fontSize: 13, beginColumnOffset: 6 };
   styles.contents.all.rowHeight = 36;
 
   return {
-    name: 'Current:Andy',
+    name: 'Tasks',
     features: {
-      copySheetEventsToCalendar: {
-        events: [Event.onSheetEdit, Event.onOvernightTimer],
-        username: 'Andy',
-        priority: 'HIGH_PRIORITY',
-        sheetIdForUrl: '1370791528',
-        workDateLabel: 'Work date',
-        eventValidator: {
-          method: (row, data, columns) => {
-            const timing = row[columns.zeroBasedIndices.timing];
-            return data.valid.filter(v => timing.endsWith(v)).length === 1;
-          },
-          data: { valid: [') Priority', ') Following'] }
-        },
-        widgetCategories: {
-          current: {
-            name: { column: 'C', rowOffset: -1 },
-            columns: {
-              noun: 'B',
-              verb: 'C',
-              timing: 'D',
-              workDate: 'E',
-              startTime: 'F',
-              durationHours: 'G'
-            }
-          }
-        }
-      },
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
         styles: styles
+      },
+      moveSheetRowsToDone: {
+        events: [Event.onOvernightTimer],
+        from: SectionMarker.main,
+        priority: 'HIGH_PRIORITY',
+        match: {
+          value: ') DONE',
+          column: 'C'
+        }
       },
       setSheetGroupsBySection: {
         events: [Event.onOvernightTimer],
         section: SectionMarker.done,
         numRowsToDisplay: 3
+      },
+      orderSheetSections: {
+        events: [Event.onOvernightTimer],
+        sections: SectionsCategory.MAIN,
+        order: [
+          { column: 'C', direction: 'ascending' },
+          { column: 'B', direction: 'ascending' }
+        ]
       }
     },
     sidebar: {
       heading: {
         type: 'heading',
-        title: 'Current:Andy'
+        title: 'Tasks'
       },
       review: getReviewConfig(),
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
-        options: ['Timing' , 'Category'],
+        options: ['Timing'],
         features: {
           orderSheetSections: {
             events: [Event.onSidebarSubmit],
             sections: SectionsCategory.MAIN,
             priority: 'HIGH_PRIORITY',
             by: {
-              timing: [{ column: 'D', direction: 'ascending' }, { column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }],
-              category: [{ column: 'B', direction: 'ascending' }, { column: 'C', direction: 'ascending' }, { column: 'D', direction: 'ascending' }]
+              timing: [
+                { column: 'C', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' }
+              ]
             }
           }
-        }
-      },
-      create: {
-        type: 'buttons',
-        title: 'Create',
-        options: ['Priority', 'Following', 'Rolling'],
-        features: {
-          createSheetItem: {
-            events: [Event.onSidebarSubmit],
-            priority: 'HIGH_PRIORITY',
-            getValues: (option) => {
-              const options = {
-                'Priority':  '(1) Priority',
-                'Following': '(2) Following',
-                'Rolling':   '(3) Rolling'
-              };
-              const timing = options[option];
-              return ['', '', timing, '', '', '', ''];
-            }
-          },
-          setSheetStylesBySection: {
-            events: [Event.onSidebarSubmit],
-            styles: styles
-          },
         }
       },
       archive: {
@@ -365,7 +330,7 @@ function getCurrentAndyConfig() {
             priority: 'HIGH_PRIORITY',
             match: {
               value: ') DONE',
-              column: 'D'
+              column: 'C'
             }
           }
         }
@@ -374,13 +339,62 @@ function getCurrentAndyConfig() {
   };
 }
 
-function getMapConfig() {
+function getProjectsConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
   let styles = state.style.getTwoPanel(sections, 2);
   styles.contents.all.rowHeight = 70;
 
   return {
-    name: 'Map',
+    name: 'Projects',
+    features: {
+      setSheetStylesBySection: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
+        styles: styles
+      },
+      orderSheetSections: {
+        events: [Event.onOvernightTimer],
+        sections: SectionsCategory.MAIN,
+        order: [
+          { column: 'C', direction: 'ascending' },
+          { column: 'B', direction: 'ascending' }
+        ]
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Projects'
+      },
+      review: getReviewConfig(),
+      arrange: {
+        type: 'buttons',
+        title: 'Arrange by',
+        options: ['Status'],
+        features: {
+          orderSheetSections: {
+            events: [Event.onSidebarSubmit],
+            sections: SectionsCategory.MAIN,
+            priority: 'HIGH_PRIORITY',
+            by: {
+              status: [
+                { column: 'C', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' }
+              ]
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
+function getLinksConfig() {
+  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
+  let styles = state.style.getTwoPanel(sections, 2);
+  styles.contents.all.rowHeight = 70;
+
+  return {
+    name: 'Links',
     features: {
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
@@ -390,14 +404,9 @@ function getMapConfig() {
     sidebar: {
       heading: {
         type: 'heading',
-        title: 'Map'
+        title: 'Links'
       },
-      review: getReviewConfig(),
-      guidance: {
-        type: 'ul',
-        title: 'Guidance',
-        texts: [`All text fields are free type`, `Don't overthink - should reflect what's on your mind`, `Come here occasionally for a new "grab bag" of items for "Current" sheets`, `Inspired by the idea of <a href='https://www.mindmapping.com/mind-map'>Mind Maps</a>`]
-      }
+      review: getReviewConfig()
     }
   };
 }
