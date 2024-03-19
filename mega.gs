@@ -19,7 +19,12 @@ function getFeatureSheetConfigs() {
   return [
     this.getDashboardConfig(),
     this.getTimelineConfig(),
-    this.getMaintenanceConfig(),
+    this.getDefaultMaintenanceConfig('ID'),
+    this.getDefaultMaintenanceConfig('Online'),
+    this.getDefaultMaintenanceConfig('Cars'),
+    this.getDefaultMaintenanceConfig('Uhura'),
+    this.getDefaultMaintenanceConfig('Home'),
+    this.getDefaultMaintenanceConfig('Andy'),
     this.getTasksConfig(),
     this.getProjectsConfig(),
     this.getLinksConfig()
@@ -188,7 +193,7 @@ function getTimelineConfig() {
   };
 }
 
-function getMaintenanceConfig() {
+function getDefaultMaintenanceConfig(sheetName) {
   const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
   const styles = state.style.getFourPanel(sections, 3, 6, 1);
   styles.contents.all.rowHeight = 30;
@@ -200,7 +205,7 @@ function getMaintenanceConfig() {
   styles.headers.smaller = { beginColumnOffset: 2, numColumns: 5, fontSize: 9 };
 
   return {
-    name: 'Maintenance',
+    name: sheetName,
     features: {
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
@@ -222,7 +227,7 @@ function getMaintenanceConfig() {
     sidebar: {
       heading: {
         type: 'heading',
-        title: 'Maintenance'
+        title: sheetName
       },
       review: getReviewConfig(SectionMarker.title, 'L'),
       arrange: {
