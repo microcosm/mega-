@@ -12,4 +12,4 @@ To set up:
 To use:
 - `cd mega-`
 - (edit `mega.gs`)
-- `grunt` to generate `built.js`
+- `grunt` to generate `built.gs`
