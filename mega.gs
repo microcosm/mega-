@@ -66,9 +66,6 @@ function getDefaultMaintenanceConfig(sheetName) {
   styles.contents.all.rowHeight = 30;
   styles.contents.all.fontSize = 9;
   styles.contents.doneDate = { beginColumnOffset: 2, numColumns: 1, border: state.style.border.thickPanelDivider };
-  styles.titles.between.endColumnOffset = 2;
-  styles.titles.review.endColumnOffset = 1;
-  styles.titles.after = state.style.getBlank({ endColumnOffset: 0, numColumns: 1, border: state.style.border.empty });
   styles.headers.smaller = { beginColumnOffset: 2, numColumns: 5, fontSize: 9 };
 
   return {
@@ -96,7 +93,6 @@ function getDefaultMaintenanceConfig(sheetName) {
         type: 'heading',
         title: sheetName
       },
-      review: getReviewConfig(SectionMarker.title, 'L'),
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
