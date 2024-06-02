@@ -17,13 +17,14 @@ function getValuesSheetConfig() {
 
 function getFeatureSheetConfigs() {
   return [
-    this.getDashboardConfig()
+    this.getDashboardConfig(),
     this.getDefaultMaintenanceConfig('ID'),
     this.getDefaultMaintenanceConfig('Online'),
     this.getDefaultMaintenanceConfig('Cars'),
     this.getDefaultMaintenanceConfig('Uhura'),
     this.getDefaultMaintenanceConfig('Home'),
-    this.getDefaultMaintenanceConfig('Andy')
+    this.getDefaultMaintenanceConfig('Andy'),
+    this.getDefaultMaintenanceConfig('Aspire')
   ];
 }
 
