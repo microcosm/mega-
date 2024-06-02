@@ -33,17 +33,13 @@ function getFeatureSheetConfigs() {
 
 function getDashboardConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'columnsOutside', 'rowsOutside'];
-  const styles = state.style.getFourPanel(sections, 1, 2, 1);
-  styles.headers.all.fontSize = PropertyCommand.IGNORE;
-  styles.headers.left = { fontSize: 13, beginColumnOffset: 0, numColumns: 1 };
-  styles.headers.middle = { fontSize: 9, beginColumnOffset: 1, numColumns: 2 };
-  styles.headers.right = { fontSize: 13, beginColumnOffset: 3 };
+  const styles = state.style.getFourPanel(sections, 1, 1, 1);
+  styles.contents.all.rowHeight = 24;
   styles.contents.left.fontSize = 12;
-  styles.contents.leftMiddle.fontSize = 9;
-  styles.contents.daysCol = { beginColumnOffset: 2, numColumns: 1, border: state.style.border.thinPanelDivider };
-  styles.contents.rightMiddle.fontSize = 9;
-  styles.contents.right.fontSize = 9;
-  Object.assign(styles.titles.review, state.style.getBlank());
+  styles.contents.left.borders = [{ top: null, left: null, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.leftMiddle.borders = [{ top: null, left: null, bottom: null, right: false, vertical: null, horizontal: null, color: '#FFFFFF', style: 'SOLID' }];
+  styles.contents.rightMiddle.borders = [{ top: null, left: false, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.right.borders = [{ top: null, left: null, bottom: null, right: null, vertical: null, horizontal: false, color: '#999999', style: 'SOLID_MEDIUM' }];
 
   return {
     name: 'Dashboard',
