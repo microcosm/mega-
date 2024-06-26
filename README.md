@@ -9,7 +9,7 @@ To set up:
 - If you don't have it, install grunt-cli `npm install -g grunt-cli`
 - `git clone --recurse-submodules git@github.com:microcosm/mega-.git`
 - `cd mega-`
-- `npm install grunt`
+- `npm install`
 
 To use:
 - (edit `mega.gs`)
