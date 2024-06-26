@@ -17,6 +17,7 @@ function getValuesSheetConfig() {
 
 function getFeatureSheetConfigs() {
   return [
+    this.getSuppliesConfig(),
     this.getDashboardConfig(),
     this.getDefaultMaintenanceConfig('ID'),
     this.getDefaultMaintenanceConfig('Online'),
@@ -26,6 +27,66 @@ function getFeatureSheetConfigs() {
     this.getDefaultMaintenanceConfig('Andy'),
     this.getDefaultMaintenanceConfig('Aspire')
   ];
+}
+
+function getSuppliesConfig() {
+  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
+  const styles = state.style.getDefault(sections);
+  styles.contents.all.rowHeight = 23;
+
+  return {
+    name: 'Supplies',
+    features: {
+      setSheetStylesBySection: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
+        styles: styles
+      },
+      orderSheetSections: {
+        events: [Event.onOvernightTimer],
+        sections: SectionsCategory.MAIN,
+        order: [
+          { column: 'B', direction: 'ascending' },
+          { column: 'D', direction: 'ascending' },
+          { column: 'E', direction: 'ascending' }
+        ]
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Supplies'
+      },
+      arrange: {
+        type: 'buttons',
+        title: 'Arrange by',
+        options: ['Area', 'Supply', 'Primary Source'],
+        features: {
+          orderSheetSections: {
+            events: [Event.onSidebarSubmit],
+            sections: SectionsCategory.MAIN,
+            priority: 'HIGH_PRIORITY',
+            by: {
+              area: [
+                { column: 'B', direction: 'ascending' },
+                { column: 'D', direction: 'ascending' },
+                { column: 'E', direction: 'ascending' }
+              ],
+              supply: [
+                { column: 'D', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' },
+                { column: 'E', direction: 'ascending' }
+              ],
+              primarySource: [
+                { column: 'E', direction: 'ascending' },
+                { column: 'B', direction: 'ascending' },
+                { column: 'D', direction: 'ascending' }
+              ]
+            }
+          }
+        }
+      }
+    }
+  };
 }
 
 function getDashboardConfig() {
