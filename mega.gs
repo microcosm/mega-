@@ -18,7 +18,8 @@ function getValuesSheetConfig() {
 function getFeatureSheetConfigs() {
   return [
     this.getSuppliesConfig(),
-    this.getDashboardConfig(),
+    this.getOrdersConfig(),
+    this.getMaintenanceDashboardConfig(),
     this.getDefaultMaintenanceConfig('ID'),
     this.getDefaultMaintenanceConfig('Online'),
     this.getDefaultMaintenanceConfig('Cars'),
@@ -30,9 +31,12 @@ function getFeatureSheetConfigs() {
 }
 
 function getSuppliesConfig() {
-  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'rowsOutside', 'columnsOutside'];
-  const styles = state.style.getDefault(sections);
+  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'columnsOutside', 'rowsOutside'];
+  const styles = state.style.getFourPanel(sections, 1, 2, 1);
   styles.contents.all.rowHeight = 23;
+  styles.contents.left.borders = [{ top: null, left: null, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.leftMiddle.borders = [{ top: null, left: null, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.rightMiddle.borders = [{ top: null, left: null, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
 
   return {
     name: 'Supplies',
@@ -46,8 +50,8 @@ function getSuppliesConfig() {
         sections: SectionsCategory.MAIN,
         order: [
           { column: 'B', direction: 'ascending' },
-          { column: 'D', direction: 'ascending' },
-          { column: 'E', direction: 'ascending' }
+          { column: 'E', direction: 'ascending' },
+          { column: 'D', direction: 'ascending' }
         ]
       }
     },
@@ -59,7 +63,7 @@ function getSuppliesConfig() {
       arrange: {
         type: 'buttons',
         title: 'Arrange by',
-        options: ['Area', 'Supply', 'Primary Source'],
+        options: ['Area'],
         features: {
           orderSheetSections: {
             events: [Event.onSidebarSubmit],
@@ -68,17 +72,7 @@ function getSuppliesConfig() {
             by: {
               area: [
                 { column: 'B', direction: 'ascending' },
-                { column: 'D', direction: 'ascending' },
-                { column: 'E', direction: 'ascending' }
-              ],
-              supply: [
-                { column: 'D', direction: 'ascending' },
-                { column: 'B', direction: 'ascending' },
-                { column: 'E', direction: 'ascending' }
-              ],
-              primarySource: [
                 { column: 'E', direction: 'ascending' },
-                { column: 'B', direction: 'ascending' },
                 { column: 'D', direction: 'ascending' }
               ]
             }
@@ -89,18 +83,13 @@ function getSuppliesConfig() {
   };
 }
 
-function getDashboardConfig() {
+function getOrdersConfig() {
   const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'columnsOutside', 'rowsOutside'];
-  const styles = state.style.getFourPanel(sections, 1, 1, 1);
-  styles.contents.all.rowHeight = 24;
-  styles.contents.left.fontSize = 12;
-  styles.contents.left.borders = [{ top: null, left: null, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
-  styles.contents.leftMiddle.borders = [{ top: null, left: null, bottom: null, right: false, vertical: null, horizontal: null, color: '#FFFFFF', style: 'SOLID' }];
-  styles.contents.rightMiddle.borders = [{ top: null, left: false, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
-  styles.contents.right.borders = [{ top: null, left: null, bottom: null, right: null, vertical: null, horizontal: false, color: '#999999', style: 'SOLID_MEDIUM' }];
+  const styles = state.style.getDefault(sections);
+  styles.contents.all.rowHeight = 23;
 
   return {
-    name: 'Dashboard',
+    name: 'Orders',
     features: {
       setSheetStylesBySection: {
         events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
@@ -110,12 +99,37 @@ function getDashboardConfig() {
     sidebar: {
       heading: {
         type: 'heading',
-        title: 'Dashboard'
-      },
-      guidance: {
-        type: 'ul',
-        title: 'Guidance',
-        texts: ['Edit last review dates on individual sheets', 'Edit warning and overdue days here to set yellow and red coloring']
+        title: 'Orders'
+      }
+    }
+  };
+}
+
+function getMaintenanceDashboardConfig() {
+  const sections = ['titles', 'titlesAboveBelow', 'headers', 'main', 'underMain', 'columnsOutside', 'rowsOutside'];
+  const styles = state.style.getFourPanel(sections, 1, 1, 1);
+  styles.contents.all.rowHeight = 24;
+  styles.contents.left.fontSize = 12;
+  styles.contents.left.borders = [{ top: null, left: null, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.leftMiddle.borders = [{ top: null, left: null, bottom: null, right: false, vertical: null, horizontal: null, color: '#FFFFFF', style: 'SOLID' }];
+  styles.contents.leftMiddle.fontSize = 9;
+  styles.contents.rightMiddle.borders = [{ top: null, left: false, bottom: null, right: true, vertical: null, horizontal: null, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.rightMiddle.fontSize = 9;
+  styles.contents.right.borders = [{ top: null, left: null, bottom: null, right: null, vertical: null, horizontal: false, color: '#999999', style: 'SOLID_MEDIUM' }];
+  styles.contents.right.fontSize = 9;
+
+  return {
+    name: 'Maintenance',
+    features: {
+      setSheetStylesBySection: {
+        events: [Event.onSheetEdit, Event.onOvernightTimer, Event.onHourTimer],
+        styles: styles
+      }
+    },
+    sidebar: {
+      heading: {
+        type: 'heading',
+        title: 'Maintenance'
       }
     }
   };
